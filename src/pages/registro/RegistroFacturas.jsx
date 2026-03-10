@@ -24,6 +24,8 @@ export default function RegistroFacturas() {
 
       const data = await descargarFactura(invoiceId)
 
+      console.log(data) // opcional para debug
+
       if (!data || !data.url) {
         throw new Error("URL de descarga no disponible")
       }
