@@ -22,9 +22,9 @@ export default function RegistroFacturas() {
   async function descargarPdf(invoiceId) {
     try {
 
-      const data = await descargarFactura(invoiceId)
+      console.log(await descargarFactura(invoiceId)) // opcional para debug
 
-      console.log(data) // opcional para debug
+      const data = await descargarFactura(invoiceId)
 
       if (!data || !data.url) {
         throw new Error("URL de descarga no disponible")
