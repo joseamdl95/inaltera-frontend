@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react"
-import { listarFacturas, emitirFactura, anularFactura, anularBorrador, descargarFactura, descargarXmlAnulacion } from "../../api/invoices"
+import { listarFacturas, emitirFactura, anularFactura, anularBorrador, descargarFactura, descargarXmlFactura, descargarXmlAnulacion } from "../../api/invoices"
 import { getBillingStatus } from "../../api/billing"
 
 export default function RegistroFacturas() {
