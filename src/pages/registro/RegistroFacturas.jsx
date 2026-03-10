@@ -23,7 +23,6 @@ export default function RegistroFacturas() {
     try {
 
       const res = await descargarFactura(invoiceId)
-      const data = await res.json()
 
       if (!data.url) {
         throw new Error("URL de descarga no disponible")
@@ -40,7 +39,6 @@ export default function RegistroFacturas() {
     try {
 
       const res = await descargarXmlFactura(invoiceId)
-      const data = await res.json()
 
       if (!data.url) {
         throw new Error("URL de descarga no disponible")
@@ -57,7 +55,6 @@ export default function RegistroFacturas() {
     try {
 
       const res = await descargarXmlAnulacion(invoiceId)
-      const data = await res.json()
 
       if (!data.url) {
         throw new Error("URL de descarga no disponible")
