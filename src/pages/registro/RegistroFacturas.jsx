@@ -21,27 +21,15 @@ export default function RegistroFacturas() {
 
   async function descargarPdf(invoiceId) {
     try {
+
       const res = await descargarFactura(invoiceId)
+      const data = await res.json()
 
-      const disposition = res.headers.get("Content-Disposition")
-
-      let filename = "factura.pdf"
-
-      if (disposition && disposition.includes("filename=")) {
-        filename = disposition
-          .split("filename=")[1]
-          .replace(/"/g, "")
+      if (!data.url) {
+        throw new Error("URL de descarga no disponible")
       }
 
-      const blob = await res.blob()
-      const url = window.URL.createObjectURL(blob)
-
-      const a = document.createElement("a")
-      a.href = url
-      a.download = filename
-      a.click()
-
-      window.URL.revokeObjectURL(url)
+      window.open(data.url, "_blank")
 
     } catch (e) {
       console.error("Error descargando PDF", e)
@@ -50,25 +38,15 @@ export default function RegistroFacturas() {
 
   async function descargarXml(invoiceId) {
     try {
+
       const res = await descargarXmlFactura(invoiceId)
+      const data = await res.json()
 
-      const disposition = res.headers.get("Content-Disposition")
-
-      let filename = "registro.xml"
-
-      if (disposition && disposition.includes("filename=")) {
-        filename = disposition.split("filename=")[1].replace(/"/g, "")
+      if (!data.url) {
+        throw new Error("URL de descarga no disponible")
       }
 
-      const blob = await res.blob()
-      const url = window.URL.createObjectURL(blob)
-
-      const a = document.createElement("a")
-      a.href = url
-      a.download = filename
-      a.click()
-
-      window.URL.revokeObjectURL(url)
+      window.open(data.url, "_blank")
 
     } catch (e) {
       console.error("Error descargando XML", e)
@@ -77,25 +55,15 @@ export default function RegistroFacturas() {
 
   async function descargarXmlAnulacionFactura(invoiceId) {
     try {
+
       const res = await descargarXmlAnulacion(invoiceId)
+      const data = await res.json()
 
-      const disposition = res.headers.get("Content-Disposition")
-
-      let filename = "registro_anulacion.xml"
-
-      if (disposition && disposition.includes("filename=")) {
-        filename = disposition.split("filename=")[1].replace(/"/g, "")
+      if (!data.url) {
+        throw new Error("URL de descarga no disponible")
       }
 
-      const blob = await res.blob()
-      const url = window.URL.createObjectURL(blob)
-
-      const a = document.createElement("a")
-      a.href = url
-      a.download = filename
-      a.click()
-
-      window.URL.revokeObjectURL(url)
+      window.open(data.url, "_blank")
 
     } catch (e) {
       console.error("Error descargando XML de anulación", e)

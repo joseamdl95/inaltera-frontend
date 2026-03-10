@@ -98,21 +98,18 @@ export async function importarFacturaPDF(file, sifId) {
 
 export function descargarFactura(id) {
   return apiFetch(`/invoices/download?id=${id}`, {
-    method: "GET",
-    responseType: "blob",
+    method: "GET"
   })
 }
 
 export function descargarXmlFactura(id) {
   return apiFetch(`/invoices/download-xml?id=${id}`, {
-    method: "GET",
-    responseType: "blob",
+    method: "GET"
   })
 }
 
 export function descargarXmlAnulacion(id) {
   return apiFetch(`/invoices/download-xml-anulacion?id=${id}`, {
-    method: "GET",
-    responseType: "blob",
+    method: "GET"
   })
 }
