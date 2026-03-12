@@ -15,7 +15,7 @@ export default function DetalleFactura() {
 
   async function cargarFactura() {
     const res = await getFacturaById(id)
-
+    console.log("RESPUESTA API", res)
     setInvoice(res.invoice)
     setLines(res.lines)
   }
