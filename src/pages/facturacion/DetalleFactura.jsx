@@ -6,33 +6,68 @@ export default function DetalleFactura() {
 
   const { id } = useParams()
 
-  const [factura, setFactura] = useState(null)
+  const [invoice, setInvoice] = useState(null)
+  const [lines, setLines] = useState([])
 
   useEffect(() => {
     cargarFactura()
   }, [])
 
   async function cargarFactura() {
-    try {
-      const res = await getFacturaById(id)
-      setFactura(res.invoice)
-    } catch (err) {
-      console.error(err)
-    }
+    const res = await getFacturaById(id)
+
+    setInvoice(res.invoice)
+    setLines(res.lines)
   }
 
-  if (!factura) {
-    return <p>Cargando factura...</p>
-  }
+  if (!invoice) return <p>Cargando...</p>
 
   return (
     <div>
-      <h1>Factura {factura.numero}</h1>
 
-      <p><strong>Cliente:</strong> {factura.cliente_nombre}</p>
-      <p><strong>NIF:</strong> {factura.cliente_nif}</p>
-      <p><strong>Fecha:</strong> {factura.fecha_emision}</p>
-      <p><strong>Estado:</strong> {factura.estado}</p>
+      <h1>Factura {invoice.numero}</h1>
+
+      <p>Cliente: {invoice.cliente_nombre}</p>
+      <p>NIF: {invoice.cliente_nif}</p>
+      <p>Fecha: {invoice.fecha_emision}</p>
+      <p>Estado: {invoice.estado}</p>
+
+      <h2>Líneas</h2>
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>IVA</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {lines.map((l, i) => {
+
+            const total =
+              l.base_imponible +
+              l.iva_cuota -
+              l.cuota_irpf
+
+            return (
+              <tr key={i}>
+                <td>{l.descripcion}</td>
+                <td>{l.cantidad}</td>
+                <td>{l.precio_unitario}</td>
+                <td>{l.iva_tipo}%</td>
+                <td>{total.toFixed(2)}€</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+
+      <h3>Total factura: {invoice.total}€</h3>
+
     </div>
   )
 }
