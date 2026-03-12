@@ -78,6 +78,10 @@ export function anularBorrador(invoiceId) {
   })
 }
 
+export function getFacturaById(id) {
+  return apiFetch(`/invoices/${id}`)
+}
+
 export function getFacturaByNumero(numero) {
   return apiFetch(`/invoices/numero/${numero}`)
 }
