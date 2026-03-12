@@ -9,6 +9,7 @@ import ResetPassword from "../pages/auth/ResetPassword"
 
 import Facturacion from "../pages/facturacion/Facturacion"
 import EmitirFactura from "../pages/facturacion/EmitirFactura"
+import DetalleFactura from "../pages/facturacion/DetalleFactura"
 import CargarPDF from "../pages/facturacion/CargarPDF"
 import Verificador from "../pages/facturacion/Verificador"
 
@@ -170,6 +171,15 @@ export default function AppRouter() {
             element={
               <RequireCompany>
                 <RegistroFacturas />
+              </RequireCompany>
+            }
+          />
+
+          <Route
+            path="/registro/:id"
+            element={
+              <RequireCompany>
+                <DetalleFactura />
               </RequireCompany>
             }
           />

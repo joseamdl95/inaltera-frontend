@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { listarFacturas, emitirFactura, anularFactura, anularBorrador, descargarFactura, descargarXmlFactura, descargarXmlAnulacion } from "../../api/invoices"
 import { getBillingStatus } from "../../api/billing"
 
@@ -251,6 +252,9 @@ export default function RegistroFacturas() {
               <td>{f.total.toFixed(2)}</td>
               <td>{f.estado}</td>
               <td>
+                <button onClick={() => navigate(`/registro/${f.id}`)}>
+                  Ver
+                </button>
                 {f.estado === "BORRADOR" && (
                   <>
                     <button disabled={billing && billing.restantes <= 0} onClick={() => handleEmitir(f.id)}>
