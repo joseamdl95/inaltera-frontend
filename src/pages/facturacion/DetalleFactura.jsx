@@ -1,35 +1,85 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getFacturaById } from "../../api/invoices"
+import { emitirFactura, anularFactura, anularBorrador, descargarFactura, descargarXmlFactura, descargarXmlAnulacion } from "../../api/invoices"
 
 export default function DetalleFactura() {
 
-  const { id } = useParams()
-  
-  console.log("ID de la URL:", id)
+    const { id } = useParams()
+    
+    console.log("ID de la URL:", id)
 
-  const [invoice, setInvoice] = useState(null)
-  const [lines, setLines] = useState([])
+    const [invoice, setInvoice] = useState(null)
+    const [lines, setLines] = useState([])
 
-  useEffect(() => {
-    if (id) {
+    useEffect(() => {
+        if (id) {
+            cargarFactura()
+        }
+    }, [id])
+
+    async function cargarFactura() {
+        const res = await getFacturaById(id)
+        console.log("RESPUESTA API", res)
+        setInvoice(res.invoice)
+        setLines(res.lines)
+    }
+
+    if (!invoice) return <p>Cargando...</p>
+
+    async function handleEmitir() {
+        const confirmar = confirm("¿Emitir esta factura definitivamente?")
+        if (!confirmar) return
+
+        await emitirFactura(invoice.id)
+        alert("Factura emitida")
         cargarFactura()
     }
-  }, [id])
 
-  async function cargarFactura() {
-    const res = await getFacturaById(id)
-    console.log("RESPUESTA API", res)
-    setInvoice(res.invoice)
-    setLines(res.lines)
-  }
+    async function handleAnular() {
+        const motivo = prompt("Motivo de anulación")
+        if (!motivo) return
 
-  if (!invoice) return <p>Cargando...</p>
+        await anularFactura(invoice.id, motivo)
+        alert("Factura anulada")
+        cargarFactura()
+    }
+
+    async function handleAnularBorrador() {
+        const confirmar = confirm("¿Anular este borrador?")
+        if (!confirmar) return
+
+        await anularBorrador(invoice.id)
+        alert("Borrador anulado")
+        cargarFactura()
+    }
+
+    async function handlePdf() {
+        const res = await descargarFactura(invoice.id)
+        window.open(res.url, "_blank")
+    }
+
+    async function handleXml() {
+        const res = await descargarXmlFactura(invoice.id)
+        window.open(res.url, "_blank")
+    }
+
+    async function handleXmlAnulacion() {
+        const res = await descargarXmlAnulacion(invoice.id)
+        window.open(res.url, "_blank")
+    }
 
   return (
     <div>
 
       <h1>Factura {invoice.numero}</h1>
+
+      <p>
+        Estado: 
+        <strong style={{ marginLeft: 5 }}>
+            {invoice.estado}
+        </strong>
+    </p>
 
       <p>Cliente: {invoice.cliente_nombre}</p>
       <p>NIF: {invoice.cliente_nif}</p>
@@ -71,6 +121,53 @@ export default function DetalleFactura() {
       </table>
 
       <h3>Total factura: {Number(invoice.total).toFixed(2)}€</h3>
+
+      <h2>Acciones</h2>
+
+        <div style={{ display: "flex", gap: "10px", marginBottom: 20 }}>
+
+        {invoice.estado === "BORRADOR" && (
+            <>
+            <button onClick={handleEmitir}>
+                Emitir factura
+            </button>
+
+            <button onClick={handleAnularBorrador}>
+                Anular borrador
+            </button>
+            </>
+        )}
+
+        {invoice.estado === "EMITIDA" && (
+            <>
+            <button onClick={handlePdf}>
+                Descargar PDF
+            </button>
+
+            <button onClick={handleXml}>
+                Descargar XML
+            </button>
+
+            <button
+                onClick={handleAnular}
+                style={{ backgroundColor: "#c0392b", color: "white" }}
+            >
+                Anular factura
+            </button>
+            </>
+        )}
+
+        {invoice.estado === "ANULADA" && (
+            <button onClick={handleXmlAnulacion}>
+            XML anulación
+            </button>
+        )}
+
+        {invoice.estado === "BORRADOR_ANULADO" && (
+            <p>Borrador anulado</p>
+        )}
+
+        </div>
 
     </div>
   )
