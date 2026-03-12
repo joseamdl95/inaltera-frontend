@@ -167,19 +167,19 @@ export default function AppRouter() {
           </Route>
 
           <Route
-            path="/registro"
+            path="/registro/:id"
             element={
               <RequireCompany>
-                <RegistroFacturas />
+                <DetalleFactura />
               </RequireCompany>
             }
           />
 
           <Route
-            path="/registro/:id"
+            path="/registro"
             element={
               <RequireCompany>
-                <DetalleFactura />
+                <RegistroFacturas />
               </RequireCompany>
             }
           />
