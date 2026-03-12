@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { crearFactura, emitirFactura, getFacturaByNumero, actualizarFactura } from "../../api/invoices"
+import { crearFactura, emitirFactura, getFacturaByNumero, actualizarFactura, getFacturaById  } from "../../api/invoices"
 import { validarNif, validarBase, validarFecha } from "../../utils/validator"
 import { getClients } from "../../api/clients"
 import { getBillingStatus } from "../../api/billing"
