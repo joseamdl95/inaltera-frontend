@@ -5,13 +5,17 @@ import { getFacturaById } from "../../api/invoices"
 export default function DetalleFactura() {
 
   const { id } = useParams()
+  
+  console.log("ID de la URL:", id)
 
   const [invoice, setInvoice] = useState(null)
   const [lines, setLines] = useState([])
 
   useEffect(() => {
-    cargarFactura()
-  }, [])
+    if (id) {
+        cargarFactura()
+    }
+  }, [id])
 
   async function cargarFactura() {
     const res = await getFacturaById(id)
@@ -48,17 +52,17 @@ export default function DetalleFactura() {
         <tbody>
           {lines.map((l, i) => {
 
-            const total =
-              l.base_imponible +
-              l.iva_cuota -
-              l.cuota_irpf
+           const total =
+            Number(l.base_imponible) +
+            Number(l.iva_cuota) -
+            Number(l.cuota_irpf)
 
             return (
               <tr key={i}>
                 <td>{l.descripcion}</td>
-                <td>{l.cantidad}</td>
-                <td>{l.precio_unitario}</td>
-                <td>{l.iva_tipo}%</td>
+                <td>{Number(l.cantidad)}</td>
+                <td>{Number(l.precio_unitario).toFixed(2)}€</td>
+                <td>{Number(l.iva_tipo)}%</td>
                 <td>{total.toFixed(2)}€</td>
               </tr>
             )
@@ -66,7 +70,7 @@ export default function DetalleFactura() {
         </tbody>
       </table>
 
-      <h3>Total factura: {invoice.total}€</h3>
+      <h3>Total factura: {Number(invoice.total).toFixed(2)}€</h3>
 
     </div>
   )
