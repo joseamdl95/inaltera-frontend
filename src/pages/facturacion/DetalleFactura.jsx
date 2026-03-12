@@ -127,20 +127,20 @@ export default function DetalleFactura() {
 
       <h2>Acciones</h2>
 
-        <div style={{ display: "block", marginBottom: 20 }}>
+        <div style={{ display: "flex", gap: "10px", marginBottom: 20, flexWrap: "wrap" }}>
 
         {invoice.estado === "BORRADOR" && (
             <>
-            <button style={{display:"block", marginBottom:"10px"}} onClick={handleEditar}>
-            Editar borrador
+            <button onClick={handleEditar}>
+                Editar borrador
             </button>
 
-            <button style={{display:"block", marginBottom:"10px"}} onClick={handleEmitir}>
-            Emitir factura
+            <button onClick={handleEmitir}>
+                Emitir factura
             </button>
 
-            <button style={{display:"block"}} onClick={handleAnularBorrador}>
-            Anular borrador
+            <button onClick={handleAnularBorrador}>
+                Anular borrador
             </button>
             </>
         )}
