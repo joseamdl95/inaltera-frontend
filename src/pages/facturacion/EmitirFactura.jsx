@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
-import { crearFactura, emitirFactura, getFacturaByNumero } from "../../api/invoices"
+import { useParams } from "react-router-dom"
+import { crearFactura, emitirFactura, getFacturaByNumero, actualizarFactura } from "../../api/invoices"
 import { validarNif, validarBase, validarFecha } from "../../utils/validator"
 import { getClients } from "../../api/clients"
 import { getBillingStatus } from "../../api/billing"
@@ -14,6 +15,16 @@ function normalizarNif(nif) {
 
 
 export default function EmitirFactura() {
+
+  const { id } = useParams()
+  const isEditing = Boolean(id)
+
+  useEffect(() => {
+    if (id) {
+      cargarFacturaExistente()
+    }
+  }, [id])
+
   const [clients, setClients] = useState([])
   const [selectedClientId, setSelectedClientId] = useState("")
   const [billing, setBilling] = useState(null)
@@ -39,8 +50,8 @@ export default function EmitirFactura() {
   })
 
   useEffect(() => {
-  fetchSifs()
-}, [])
+    fetchSifs()
+  }, [])
 
   async function fetchClients() {
     try {
@@ -249,7 +260,7 @@ export default function EmitirFactura() {
         sifIdFinal = res.id
       }
 
-      const res = await crearFactura({
+      const payload = {
         tipo_factura: tipoFactura,
         factura_rectificada_id: tipoFactura !== "F1" ? facturaRectificadaId : null,
         motivo_rectificacion: tipoFactura !== "F1" ? motivoRectificacion : null,
@@ -260,7 +271,18 @@ export default function EmitirFactura() {
         cliente_direccion: direccionCompleta,
         fecha_emision: fechaEmision,
         lines: linesPayload
-      })
+      }
+
+      let res
+
+      if (isEditing) {
+        res = await actualizarFactura(invoiceId, payload)
+        alert("Borrador actualizado")
+      } else {
+        res = await crearFactura(payload)
+        alert("Factura creada como BORRADOR")
+        setInvoiceId(res.invoice_id)
+      }
       
       alert("Factura creada como BORRADOR")
       setInvoiceId(res.invoice_id ) 
@@ -402,6 +424,36 @@ export default function EmitirFactura() {
     }
   }
 
+  async function cargarFacturaExistente() {
+
+    const res = await getFacturaById(id)
+
+    const factura = res.invoice
+    const lines = res.lines
+
+    setInvoiceId(factura.id)
+
+    setClienteNombre(factura.cliente_nombre)
+    setClienteNif(factura.cliente_nif)
+    setClientePais(factura.cliente_pais)
+
+    const parsed = parseDireccion(factura.cliente_direccion)
+
+    setDireccion(parsed.direccion)
+    setCodigoPostal(parsed.codigoPostal)
+    setCiudad(parsed.ciudad)
+    setProvincia(parsed.provincia)
+
+    setFechaEmision(factura.fecha_emision.slice(0,16))
+
+    setLines(lines.map(l => ({
+      concepto: l.descripcion,
+      cantidad: l.cantidad,
+      precio_unitario: l.precio_unitario,
+      iva: l.iva_tipo,
+      irpf: l.irpf_porcentaje
+    })))
+  }
 
   return (
     <div style={{ maxWidth: 500 }}>
@@ -746,8 +798,8 @@ export default function EmitirFactura() {
         <strong>Total factura: {totalFactura.toFixed(2)} €</strong>
 
         <br /><br />
-        <button type="submit" disabled={loading}>
-          Crear BORRADOR
+        <button type="submit">
+          {isEditing ? "Actualizar BORRADOR" : "Crear BORRADOR"}
         </button>
       </form>
 

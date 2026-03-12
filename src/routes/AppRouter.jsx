@@ -158,6 +158,15 @@ export default function AppRouter() {
               }
             />
 
+            <Route
+              path="/facturacion/editar/:id"
+              element={
+                <RequireCompany>
+                  <EmitirFactura />
+                </RequireCompany>
+              }
+            />
+
             {/* default */}
             <Route
               index

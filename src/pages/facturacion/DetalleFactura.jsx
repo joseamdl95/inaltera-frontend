@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { getFacturaById } from "../../api/invoices"
 import { emitirFactura, anularFactura, anularBorrador, descargarFactura, descargarXmlFactura, descargarXmlAnulacion } from "../../api/invoices"
 
 export default function DetalleFactura() {
 
     const { id } = useParams()
-    
-    console.log("ID de la URL:", id)
+    const navigate = useNavigate()
 
     const [invoice, setInvoice] = useState(null)
     const [lines, setLines] = useState([])
@@ -20,12 +19,16 @@ export default function DetalleFactura() {
 
     async function cargarFactura() {
         const res = await getFacturaById(id)
-        console.log("RESPUESTA API", res)
+       
         setInvoice(res.invoice)
         setLines(res.lines)
     }
 
     if (!invoice) return <p>Cargando...</p>
+
+    function handleEditar() {
+        navigate(`/facturacion/editar/${invoice.id}`)
+    }
 
     async function handleEmitir() {
         const confirmar = confirm("¿Emitir esta factura definitivamente?")
@@ -128,6 +131,10 @@ export default function DetalleFactura() {
 
         {invoice.estado === "BORRADOR" && (
             <>
+            <button onClick={handleEditar}>
+                Editar borrador
+            </button>
+
             <button onClick={handleEmitir}>
                 Emitir factura
             </button>

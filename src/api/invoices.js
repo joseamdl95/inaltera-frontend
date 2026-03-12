@@ -23,6 +23,14 @@ export function crearFactura(data) {
   })
 }
 
+// Actualizar factura BORRADOR
+export function actualizarFactura(id, data) {
+  return apiFetch(`/invoices/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data)
+  })
+}
+
 // Emitir factura
 export function emitirFactura(invoiceId) {
   return apiFetch("/invoices/emit", {
