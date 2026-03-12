@@ -16,6 +16,7 @@ export default function RegistroFacturas() {
   const [motivo, setMotivo] = useState("")
   const [invoiceToCancel, setInvoiceToCancel] = useState(null)
   const [billing, setBilling] = useState(null)
+  const navigate = useNavigate()
 
   const [logsIntegrity, setLogsIntegrity] = useState(null)
   const [facturasIntegrity, setFacturasIntegrity] = useState(null)
