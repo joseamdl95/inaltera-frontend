@@ -142,6 +142,13 @@ export default function DetalleFactura() {
             <button onClick={handleAnularBorrador}>
                 Anular borrador
             </button>
+
+            <button
+            onClick={handleEditar}
+            style={{ background: "orange", padding: "6px" }}
+            >
+            Editar borrador
+            </button>
             </>
         )}
 
