@@ -185,9 +185,19 @@ export default function DetalleFactura() {
         )}
 
         {invoice.estado === "ANULADA" && (
+            <>
+            <button onClick={handlePdf}>
+                Descargar PDF
+            </button>
+
+            <button onClick={handleXml}>
+                Descargar XML
+            </button>
+
             <button onClick={handleXmlAnulacion}>
             XML anulación
             </button>
+            </>
         )}
 
         {invoice.estado === "BORRADOR_ANULADO" && (
