@@ -19,6 +19,7 @@ import Empresa from "../pages/perfil/Empresa"
 import Clientes from "../pages/perfil/Clientes" 
 
 import RegistroFacturas from "../pages/registro/RegistroFacturas"
+import VerificarFactura from "../pages/public/VerificarFactura"
 
 
 
