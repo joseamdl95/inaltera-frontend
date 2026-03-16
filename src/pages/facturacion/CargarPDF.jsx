@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { importarFacturaPDF, emitirFactura } from "../../api/invoices" 
 import { getBillingStatus } from "../../api/billing"
 import { getSifs, createSif } from "../../api/sif"
 
 export default function CargarPDF() {
+  const navigate = useNavigate()
   const [archivo, setArchivo] = useState(null)
   const [loading, setLoading] = useState(false)
   const [invoiceId, setInvoiceId] = useState(null) // Para guardar el ID de la factura creada
@@ -70,7 +72,7 @@ export default function CargarPDF() {
       // CAMBIO AQUÍ: Usar res.invoice_id en lugar de res.id
       if (res && res.invoice_id) {
         setInvoiceId(res.invoice_id) 
-        setMensaje("Factura importada como BORRADOR. ¿Deseas emitirla legalmente ahora?")
+        setMensaje("Factura importada como BORRADOR. Puedes emitirla ahora o revisarla antes desde su detalle.")
       } else {
         alert("No se recibió el ID de la factura")
       }
@@ -196,6 +198,7 @@ export default function CargarPDF() {
       ) : (
         <div style={{ backgroundColor: "#f0f9ff", padding: "15px", borderRadius: "5px" }}>
           <p style={{ color: "#0369a1" }}>{mensaje}</p>
+          
           <button 
             onClick={handleEmitir} 
             disabled={loading || billing && billing.restantes <= 0}
@@ -203,6 +206,19 @@ export default function CargarPDF() {
           >
             {loading ? "Sellando y Registrando..." : "Sellar y Emitir Factura"}
           </button>
+
+          <button
+            onClick={() => navigate(`/registro/${invoiceId}`)}
+            style={{
+              marginLeft: "10px",
+              padding: "10px 20px",
+              border: "1px solid #ccc",
+              cursor: "pointer"
+            }}
+          >
+            Ir al borrador
+          </button>
+
           <button 
             onClick={() => { setInvoiceId(null); setArchivo(null); }} 
             style={{ marginLeft: "10px", background: "none", border: "1px solid #ccc", cursor: "pointer" }}
