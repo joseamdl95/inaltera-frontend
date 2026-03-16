@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams, useSearchParams  } from "react-router-dom"
+import { useParams, useSearchParams, useNavigate } from "react-router-dom"
 import { crearFactura, emitirFactura, getFacturaByNumero, actualizarFactura, getFacturaById  } from "../../api/invoices"
 import { validarNif, validarBase, validarFecha } from "../../utils/validator"
 import { getClients } from "../../api/clients"
@@ -17,6 +17,7 @@ function normalizarNif(nif) {
 export default function EmitirFactura() {
 
   const { id } = useParams()
+  const navigate = useNavigate()
   const isEditing = Boolean(id)
 
   useEffect(() => {
@@ -299,8 +300,6 @@ export default function EmitirFactura() {
         setInvoiceId(res.invoice_id)
       }
       
-      alert("Factura creada como BORRADOR")
-      setInvoiceId(res.invoice_id ) 
     } catch (err) {
       alert("Error al crear factura")
       console.error(err)
@@ -824,9 +823,26 @@ export default function EmitirFactura() {
           {billing.usadas} / {billing.limite} facturas usadas
         </div>
       )}
-      <button onClick={handleEmitir} disabled={!invoiceId || billing && billing.restantes <= 0}>
-        Emitir factura
-      </button>
+    
+      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+
+        <button
+          onClick={handleEmitir}
+          disabled={!invoiceId || billing && billing.restantes <= 0}
+        >
+          Emitir factura
+        </button>
+
+        {invoiceId && (
+          <button
+            onClick={() => navigate(`/registro/${invoiceId}`)}
+          >
+            Ver borrador
+          </button>
+        )}
+
+      </div>
+      
     </div>
   )
 }
