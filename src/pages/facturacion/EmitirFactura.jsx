@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useSearchParams  } from "react-router-dom"
 import { crearFactura, emitirFactura, getFacturaByNumero, actualizarFactura, getFacturaById  } from "../../api/invoices"
 import { validarNif, validarBase, validarFecha } from "../../utils/validator"
 import { getClients } from "../../api/clients"
@@ -29,6 +29,11 @@ export default function EmitirFactura() {
   const [selectedClientId, setSelectedClientId] = useState("")
   const [billing, setBilling] = useState(null)
 
+  const [searchParams] = useSearchParams()
+
+  const tipoFromUrl = searchParams.get("tipo")
+  const originalFromUrl = searchParams.get("original")
+
   useEffect(() => {
     fetchClients()
   }, [])
@@ -38,6 +43,16 @@ export default function EmitirFactura() {
       .then(setBilling)
       .catch(console.error)
   }, [])
+
+  useEffect(() => {
+    if (tipoFromUrl) {
+      setTipoFactura(tipoFromUrl)
+    }
+
+    if (originalFromUrl) {
+      setFacturaRectificadaId(originalFromUrl)
+    }
+  }, [tipoFromUrl, originalFromUrl])
 
   const [sifs, setSifs] = useState([])
   const [selectedSifId, setSelectedSifId] = useState("")

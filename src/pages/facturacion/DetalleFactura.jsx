@@ -39,6 +39,18 @@ export default function DetalleFactura() {
         cargarFactura()
     }
 
+    function handleRectificativaSustitutiva() {
+        navigate(
+            `/facturacion/emitir?tipo=R1&original=${invoice.numero}`
+        )
+    }
+
+    function handleRectificativaDiferencia() {
+        navigate(
+            `/facturacion/emitir?tipo=R2&original=${invoice.numero}`
+        )
+    }
+
     async function handleAnular() {
         const motivo = prompt("Motivo de anulación")
         if (!motivo) return
@@ -153,6 +165,14 @@ export default function DetalleFactura() {
 
             <button onClick={handleXml}>
                 Descargar XML
+            </button>
+
+            <button onClick={handleRectificativaSustitutiva}>
+                Rectificativa por sustitución
+            </button>
+
+            <button onClick={handleRectificativaDiferencia}>
+                Rectificativa por diferencia
             </button>
 
             <button
