@@ -12,6 +12,8 @@ export default function Empresa() {
     pais: "ES",
   })
 
+  const [logoUrl, setLogoUrl] = useState(null)
+
   // Estados individuales para la dirección
   const [calle, setCalle] = useState("")
   const [codigoPostal, setCodigoPostal] = useState("")
@@ -27,6 +29,8 @@ export default function Empresa() {
           nif: data.nif,
           pais: data.pais ?? "ES",
         })
+
+        setLogoUrl(data.logo_url)
 
         // --- LÓGICA DE DESMONTAJE (REVERSE PARSE) ---
         if (data.direccion) {
@@ -72,6 +76,35 @@ export default function Empresa() {
   async function fetchSifs() {
     const res = await getSifs()
     setSifs(res.data)
+  }
+
+  async function handleLogoUpload(file) {
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append("logo", file)
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies/upload-logo`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        body: formData
+      })
+
+      if (!res.ok) throw new Error("Error subiendo logo")
+
+      const data = await res.json()
+
+      setLogoUrl(data.logo_url)
+
+      alert("Logo subido correctamente")
+
+    } catch (err) {
+      console.error(err)
+      alert("Error subiendo logo")
+    }
   }
 
   const handleEmpresaChange = (e) => {
@@ -126,6 +159,27 @@ export default function Empresa() {
 
   return (
     <div style={{ maxWidth: 600 }}>
+      
+      <div>
+      <label>Logo empresa</label><br />
+
+      <input
+        type="file"
+        accept="image/png, image/jpeg"
+        onChange={(e) => handleLogoUpload(e.target.files[0])}
+      />
+
+      {/* PREVIEW */}
+      {logoUrl && (
+        <div style={{ marginTop: 10 }}>
+          <img 
+            src={logoUrl} 
+            style={{ height: 80, objectFit: "contain" }}
+          />
+        </div>
+      )}
+    </div>
+
       <h1>
         {hasCompany ? "Datos fiscales (empresa)" : "Crear empresa"}
       </h1>

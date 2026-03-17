@@ -82,7 +82,7 @@ export default function VerificadorXml() {
                 <th style={styles.th}>XML válido</th>
                 <th style={styles.th}>Hash correcto</th>
                 <th style={styles.th}>Cadena íntegra</th>
-                <th style={styles.th}>En tu BBDD</th>
+                <th style={styles.th}>Registrado</th>
                 <th style={styles.th}>Coincide Contenido</th>
               </tr>
             </thead>
