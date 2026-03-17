@@ -633,62 +633,74 @@ export default function EmitirFactura() {
           )}
         
           <div className="grid grid-cols-2 gap-4">
-            <label className="text-sm text-gray-600">Cliente / Razón social</label><br />
-            <Input
-              type="text"
-              value={clienteNombre}
-              onChange={(e) => setClienteNombre(e.target.value)}
-              disabled={isR2}
-              required
-            />
-         
-            <label className="text-sm text-gray-600">NIF cliente</label><br />
-            <Input
-              type="text"
-              value={clienteNif}
-              onChange={(e) => setClienteNif(e.target.value)}
-              disabled={isR2}
-              required
-            />
-            {errores.clienteNif && (
-              <small style={{ color: "red" }}>{errores.clienteNif}</small>
-            )}
-          
-            <label className="text-sm text-gray-600">Calle y número</label><br />
-            <Input
-              type="text"
-              value={direccion}
-              onChange={(e) => setDireccion(e.target.value)}
-              disabled={isR2}
-              required
-            />
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-gray-600">Cliente / Razón social</label><br />
+              <Input
+                type="text"
+                value={clienteNombre}
+                onChange={(e) => setClienteNombre(e.target.value)}
+                disabled={isR2}
+                required
+              />
+            </div>
 
-            <label className="text-sm text-gray-600">Código postal</label><br />
-            <Input
-              type="text"
-              value={codigoPostal}
-              onChange={(e) => setCodigoPostal(e.target.value)}
-              disabled={isR2}
-              required
-            />
-  
-            <label className="text-sm text-gray-600">Ciudad</label><br />
-            <Input
-              type="text"
-              value={ciudad}
-              onChange={(e) => setCiudad(e.target.value)}
-              disabled={isR2}
-              required
-            />
-          
-            <label className="text-sm text-gray-600">Provincia</label><br />
-            <Input
-              type="text"
-              value={provincia}
-              onChange={(e) => setProvincia(e.target.value)}
-              disabled={isR2}
-              required
-            />
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-gray-600">NIF cliente</label><br />
+              <Input
+                type="text"
+                value={clienteNif}
+                onChange={(e) => setClienteNif(e.target.value)}
+                disabled={isR2}
+                required
+              />
+              {errores.clienteNif && (
+                <small style={{ color: "red" }}>{errores.clienteNif}</small>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-gray-600">Calle y número</label><br />
+              <Input
+                type="text"
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
+                disabled={isR2}
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-gray-600">Código postal</label><br />
+              <Input
+                type="text"
+                value={codigoPostal}
+                onChange={(e) => setCodigoPostal(e.target.value)}
+                disabled={isR2}
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-gray-600">Ciudad</label><br />
+              <Input
+                type="text"
+                value={ciudad}
+                onChange={(e) => setCiudad(e.target.value)}
+                disabled={isR2}
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-gray-600">Provincia</label><br />
+              <Input
+                type="text"
+                value={provincia}
+                onChange={(e) => setProvincia(e.target.value)}
+                disabled={isR2}
+                required
+              />
+            </div>
           </div>
         </Card>  
 

@@ -1,13 +1,22 @@
-export default function Button({ children, variant = "primary", ...props }) {
-  const base = "px-4 py-2 rounded-lg transition text-sm font-medium"
+export default function Button({
+  children,
+  variant = "primary",
+  className = "",
+  ...props
+}) {
+
+  const base = "px-4 py-2 rounded-lg text-sm font-medium transition"
 
   const styles = {
-    primary: "bg-primary text-white hover:bg-blue-600",
-    secondary: "border border-gray-300 bg-white text-gray-700 hover:bg-gray-100",
+    primary: "bg-blue-600 text-white hover:bg-blue-700 shadow",
+    secondary: "bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-300"
   }
 
   return (
-    <button className={`${base} ${styles[variant]}`} {...props}>
+    <button
+      className={`${base} ${styles[variant]} ${className}`}
+      {...props}
+    >
       {children}
     </button>
   )
