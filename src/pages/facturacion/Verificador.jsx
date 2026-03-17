@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { apiFetch } from "../../api/client";
-//import { useAuth } from "../../context/AuthContext";
 
 export default function VerificadorXml() {
   const [files, setFiles] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [logsIntegrity, setLogsIntegrity] = useState(null);
   const[sif, setSif]= useState();
-  //const { hasCompany } = useAuth();
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -31,9 +28,9 @@ export default function VerificadorXml() {
         method: "POST",
         body: formData,
       });
-      setLogsIntegrity(data.logs_integrity);
+    
       setResults(data.resultados);
-      setSif(results.sif);
+      setSif(data.sif);
     } catch (error) {
       console.error("Error verificando:", error);
       alert("Error al conectar con el servidor");
@@ -49,23 +46,6 @@ export default function VerificadorXml() {
       <h2 style={{ borderBottom: "2px solid #007bff", paddingBottom: "10px" }}>
         Verificador de Integridad XML (Verifactu)
       </h2>
-
-      {logsIntegrity !== null && (
-        <div
-          style={{
-            marginTop: 15,
-            padding: "10px",
-            borderRadius: 6,
-            backgroundColor: logsIntegrity ? "#e8f5e9" : "#ffebee",
-            color: logsIntegrity ? "#2e7d32" : "#c62828",
-            fontWeight: "bold",
-          }}
-        >
-          {logsIntegrity
-            ? "✔ Integridad de logs verificada"
-            : "⚠ Integridad de logs comprometida"}
-        </div>
-      )}
       
       <div style={{ margin: "20px 0", padding: "15px", backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
         <input 
@@ -99,8 +79,9 @@ export default function VerificadorXml() {
             <thead>
               <tr style={{ backgroundColor: "#e9ecef" }}>
                 <th style={styles.th}>Archivo / Nº</th>
-                <th style={styles.th}>Íntegro (Hash)</th>
-                <th style={styles.th}>Tu Empresa</th>
+                <th style={styles.th}>XML válido</th>
+                <th style={styles.th}>Hash correcto</th>
+                <th style={styles.th}>Cadena íntegra</th>
                 <th style={styles.th}>En tu BBDD</th>
                 <th style={styles.th}>Coincide Contenido</th>
               </tr>
@@ -113,10 +94,13 @@ export default function VerificadorXml() {
                     <small>{res.numero}</small>
                   </td>
                   <td style={{ ...styles.td, textAlign: "center" }}>
-                    {getStatusIcon(res.integro)}
+                    {getStatusIcon(res.xml_valido)}
                   </td>
                   <td style={{ ...styles.td, textAlign: "center" }}>
-                    {getStatusIcon(res.empresa_correcta)}
+                    {getStatusIcon(res.hashCorrecto)}
+                  </td>
+                  <td style={{ ...styles.td, textAlign: "center" }}>
+                    {getStatusIcon(res.cadena_integra)}
                   </td>
                   <td style={{ ...styles.td, textAlign: "center" }}>
                     {getStatusIcon(res.registrado)}

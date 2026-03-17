@@ -123,10 +123,8 @@ export default function AppRouter() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       
-      <Route
-        path="/verificar"
-        element={<VerificarFactura />}
-      />
+      <Route path="/verificar" element={<VerificarFactura />} />
+      <Route path="/verificador" element={<Verificador />} />
 
       {/* privadas */}
       <Route element={<PrivateRoute />}>
