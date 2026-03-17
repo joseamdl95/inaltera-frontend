@@ -26,7 +26,7 @@ export function uploadLogo(file) {
   const formData = new FormData()
   formData.append("logo", file)
 
-  return apiFetch("/companies/upload-logo", {
+  return apiFetch("/company/upload-logo", {
     method: "POST",
     body: formData
   })
