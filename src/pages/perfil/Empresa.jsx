@@ -159,7 +159,7 @@ export default function Empresa() {
 
   return (
     <div style={{ maxWidth: 600 }}>
-      
+
       <div>
       <label>Logo empresa</label><br />
 
@@ -173,7 +173,7 @@ export default function Empresa() {
       {logoUrl && (
         <div style={{ marginTop: 10 }}>
           <img 
-            src={logoUrl} 
+            src={logoUrl + "?t=" + Date.now()} 
             style={{ height: 80, objectFit: "contain" }}
           />
         </div>
