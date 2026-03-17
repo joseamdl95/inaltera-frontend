@@ -3,7 +3,7 @@ export default function Button({ children, variant = "primary", ...props }) {
 
   const styles = {
     primary: "bg-primary text-white hover:bg-blue-600",
-    secondary: "border border-gray-300 hover:bg-gray-100",
+    secondary: "border border-gray-300 bg-white text-gray-700 hover:bg-gray-100",
   }
 
   return (

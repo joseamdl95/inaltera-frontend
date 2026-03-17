@@ -633,7 +633,7 @@ export default function EmitirFactura() {
           )}
         
           <div className="grid grid-cols-2 gap-4">
-            <label>Cliente / Razón social</label><br />
+            <label className="text-sm text-gray-600">Cliente / Razón social</label><br />
             <Input
               type="text"
               value={clienteNombre}
@@ -642,7 +642,7 @@ export default function EmitirFactura() {
               required
             />
          
-            <label>NIF cliente</label><br />
+            <label className="text-sm text-gray-600">NIF cliente</label><br />
             <Input
               type="text"
               value={clienteNif}
@@ -654,7 +654,7 @@ export default function EmitirFactura() {
               <small style={{ color: "red" }}>{errores.clienteNif}</small>
             )}
           
-            <label>Calle y número</label><br />
+            <label className="text-sm text-gray-600">Calle y número</label><br />
             <Input
               type="text"
               value={direccion}
@@ -663,7 +663,7 @@ export default function EmitirFactura() {
               required
             />
 
-            <label>Código postal</label><br />
+            <label className="text-sm text-gray-600">Código postal</label><br />
             <Input
               type="text"
               value={codigoPostal}
@@ -672,7 +672,7 @@ export default function EmitirFactura() {
               required
             />
   
-            <label>Ciudad</label><br />
+            <label className="text-sm text-gray-600">Ciudad</label><br />
             <Input
               type="text"
               value={ciudad}
@@ -681,7 +681,7 @@ export default function EmitirFactura() {
               required
             />
           
-            <label>Provincia</label><br />
+            <label className="text-sm text-gray-600">Provincia</label><br />
             <Input
               type="text"
               value={provincia}
@@ -698,6 +698,15 @@ export default function EmitirFactura() {
             <h3 className="font-semibold">Líneas</h3>
             <Button type="button" onClick={addLine}>+ Añadir</Button>
           </div>
+            
+            <div className="grid grid-cols-6 gap-2 text-xs text-gray-500 mb-2">
+              <span>Concepto</span>
+              <span>Cant.</span>
+              <span>Precio</span>
+              <span>IVA %</span>
+              <span>IRPF %</span>
+              <span>Total</span>
+            </div>
 
             <div className="space-y-3">
               {lines.map((line, index) => {
