@@ -4,6 +4,10 @@ import { importarFacturaPDF, emitirFactura } from "../../api/invoices"
 import { getBillingStatus } from "../../api/billing"
 import { getSifs, createSif } from "../../api/sif"
 
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
+
 export default function CargarPDF() {
   const navigate = useNavigate()
   const [archivo, setArchivo] = useState(null)
@@ -107,21 +111,24 @@ export default function CargarPDF() {
   }
 
   return (
-    <div style={{ maxWidth: 500, padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}>
-      <h1>Cargar factura PDF</h1>
+    <div className="max-w-3xl mx-auto space-y-6">
+      <h1 className="text-2xl font-bold">Importar factura desde PDF</h1>
 
+      {/* 📊 USO */}
       {billing && (
-        <div style={{ marginBottom: 20 }}>
-          {billing.usadas} / {billing.limite} facturas usadas
-        </div>
+        <p className="text-sm text-gray-500">
+        {billing.usadas} / {billing.limite} facturas usadas
+      </p>
       )}
 
       {!invoiceId ? (
-        <form onSubmit={handleUpload}>
+        <form onSubmit={handleUpload}  className="space-y-6">
 
-          <div>
-            <label>Sistema de facturación (SIF)</label><br />
+          {/* 🧩 SIF */}
+          <Card>
+            <h3 className="font-semibold mb-4">Sistema de facturación</h3>
             <select
+              className="border rounded-lg px-3 py-2 w-full"
               value={selectedSifId}
               onChange={(e) => {
                 const value = e.target.value
@@ -147,8 +154,8 @@ export default function CargarPDF() {
             </select>
 
             {isNewSif && (
-              <div>
-                <input
+              <div className="grid grid-cols-2 gap-3 mt-4">
+                <Input
                   placeholder="Alias"
                   value={nuevoSif.alias}
                   onChange={(e) =>
@@ -156,7 +163,7 @@ export default function CargarPDF() {
                   }
                 />
 
-                <input
+                <Input
                   placeholder="Software"
                   value={nuevoSif.software_nombre}
                   onChange={(e) =>
@@ -164,7 +171,7 @@ export default function CargarPDF() {
                   }
                 />
 
-                <input
+                <Input
                   placeholder="Versión"
                   value={nuevoSif.version}
                   onChange={(e) =>
@@ -172,7 +179,7 @@ export default function CargarPDF() {
                   }
                 />
 
-                <input
+                <Input
                   placeholder="NIF (opcional)"
                   value={nuevoSif.nif}
                   onChange={(e) =>
@@ -181,51 +188,55 @@ export default function CargarPDF() {
                 />
               </div>
             )}
-          </div>
+          </Card>
 
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            disabled={loading}
-          />
-          {archivo && <p>Archivo seleccionado: {archivo.name}</p>}
-          <br />
-          <button type="submit" disabled={loading || !archivo}>
+          {/* 📄 PDF */}
+          <Card>
+            <h3 className="font-semibold mb-4">Archivo PDF</h3>
+            
+            <Imput
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              disabled={loading}
+            />
+            {archivo && (<p className="text-sm text-gray-600 mt-2">Archivo seleccionado: {archivo.name}</p>)}
+          </Card>
+
+          {/* 🔘 ACCIÓN */}
+          <Button type="submit" disabled={loading || !archivo}>
             {loading ? "Procesando IA..." : "Cargar e Importar PDF"}
-          </button>
+          </Button>
         </form>
       ) : (
-        <div style={{ backgroundColor: "#f0f9ff", padding: "15px", borderRadius: "5px" }}>
-          <p style={{ color: "#0369a1" }}>{mensaje}</p>
+        <Card>
+          <p className="text-blue-700 mb-4">{mensaje}</p>
+
+          <div className="flex gap-3 flex-wrap">
           
-          <button 
-            onClick={handleEmitir} 
-            disabled={loading || billing && billing.restantes <= 0}
-            style={{ backgroundColor: "#16a34a", color: "white", padding: "10px 20px", border: "none", cursor: "pointer" }}
-          >
-            {loading ? "Sellando y Registrando..." : "Sellar y Emitir Factura"}
-          </button>
+            <Button 
+              onClick={handleEmitir} 
+              disabled={loading || billing && billing.restantes <= 0}
+              style={{ backgroundColor: "#16a34a", color: "white", padding: "10px 20px", border: "none", cursor: "pointer" }}
+            >
+              {loading ? "Sellando y Registrando..." : "Sellar y Emitir Factura"}
+            </Button>
 
-          <button
-            onClick={() => navigate(`/registro/${invoiceId}`)}
-            style={{
-              marginLeft: "10px",
-              padding: "10px 20px",
-              border: "1px solid #ccc",
-              cursor: "pointer"
-            }}
-          >
-            Ir al borrador
-          </button>
+            <Button
+              variant="secondary"
+              onClick={() => navigate(`/registro/${invoiceId}`)}
+            >
+              Ir al borrador
+            </Button>
 
-          <button 
-            onClick={() => { setInvoiceId(null); setArchivo(null); }} 
-            style={{ marginLeft: "10px", background: "none", border: "1px solid #ccc", cursor: "pointer" }}
-          >
-            Cancelar
-          </button>
-        </div>
+            <Button 
+              variant="secondary"
+              onClick={() => { setInvoiceId(null); setArchivo(null); }} 
+            >
+              Cancelar
+            </Button>
+          </div>
+        </Card>
       )}
     </div>
   )
