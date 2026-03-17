@@ -499,7 +499,7 @@ export default function EmitirFactura() {
           <Card>
             <h3 className="font-semibold mb-4">Factura rectificativa</h3>
             <div className="space-y-4">
-              <input
+              <Input
                 type="text"
                 value={facturaRectificadaId}
                 onChange={(e) => setFacturaRectificadaId(e.target.value)}
@@ -520,7 +520,7 @@ export default function EmitirFactura() {
         {/* 📅 FECHA */}
         <Card>
           <h3 className="font-semibold mb-4">Fecha</h3>
-          <input
+          <Input
             type="datetime-local"
             value={fechaEmision}
             onChange={(e) => setFechaEmision(e.target.value)}
@@ -564,16 +564,16 @@ export default function EmitirFactura() {
 
           {isNewSif && (
             <div className="grid grid-cols-2 gap-3 mt-4">
-              <input placeholder="Alias" value={nuevoSif.alias}
+              <Input placeholder="Alias" value={nuevoSif.alias}
                 onChange={(e) => setNuevoSif({ ...nuevoSif, alias: e.target.value })}
               />
-              <input placeholder="Software" value={nuevoSif.software_nombre}
+              <Input placeholder="Software" value={nuevoSif.software_nombre}
                 onChange={(e) => setNuevoSif({ ...nuevoSif, software_nombre: e.target.value })}
               />
-              <input  placeholder="Versión" value={nuevoSif.version}
+              <Input  placeholder="Versión" value={nuevoSif.version}
                 onChange={(e) => setNuevoSif({ ...nuevoSif, version: e.target.value })}
               />
-              <input
+              <Input
                 placeholder="NIF (opcional)" value={nuevoSif.nif} onChange={(e) => setNuevoSif({ ...nuevoSif, nif: e.target.value })}
               />
             </div>
@@ -634,7 +634,7 @@ export default function EmitirFactura() {
         
           <div className="grid grid-cols-2 gap-4">
             <label>Cliente / Razón social</label><br />
-            <input
+            <Input
               type="text"
               value={clienteNombre}
               onChange={(e) => setClienteNombre(e.target.value)}
@@ -643,7 +643,7 @@ export default function EmitirFactura() {
             />
          
             <label>NIF cliente</label><br />
-            <input
+            <Input
               type="text"
               value={clienteNif}
               onChange={(e) => setClienteNif(e.target.value)}
@@ -655,7 +655,7 @@ export default function EmitirFactura() {
             )}
           
             <label>Calle y número</label><br />
-            <input
+            <Input
               type="text"
               value={direccion}
               onChange={(e) => setDireccion(e.target.value)}
@@ -664,7 +664,7 @@ export default function EmitirFactura() {
             />
 
             <label>Código postal</label><br />
-            <input
+            <Input
               type="text"
               value={codigoPostal}
               onChange={(e) => setCodigoPostal(e.target.value)}
@@ -673,7 +673,7 @@ export default function EmitirFactura() {
             />
   
             <label>Ciudad</label><br />
-            <input
+            <Input
               type="text"
               value={ciudad}
               onChange={(e) => setCiudad(e.target.value)}
@@ -682,7 +682,7 @@ export default function EmitirFactura() {
             />
           
             <label>Provincia</label><br />
-            <input
+            <Input
               type="text"
               value={provincia}
               onChange={(e) => setProvincia(e.target.value)}
@@ -712,13 +712,13 @@ export default function EmitirFactura() {
                 return (
                   <div key={index} className="grid grid-cols-6 gap-2 items-center">
                     
-                    <input
+                    <Input
                       placeholder="Servicio/producto"
                       value={line.concepto}
                       onChange={(e)=>updateLine(index,"concepto",e.target.value)}
                     />
 
-                    <input
+                    <Input
                       type="number"
                       min={tipoFactura === "R2" ? undefined : "0"}
                       step="1"
@@ -726,7 +726,7 @@ export default function EmitirFactura() {
                       onChange={(e)=>updateLine(index,"cantidad",e.target.value)}
                     />            
 
-                    <input
+                    <Input
                       type="number"
                       min={tipoFactura === "R2" ? undefined : "0"}
                       step="0.01"
@@ -734,13 +734,13 @@ export default function EmitirFactura() {
                       onChange={(e)=>updateLine(index,"precio_unitario",e.target.value)}
                     />
                    
-                    <input
+                    <Input
                       type="number"
                       value={line.iva}
                       onChange={(e)=>updateLine(index,"iva",e.target.value)}
                     />
                     
-                    <input
+                    <Input
                       type="number"
                       value={line.irpf}
                       onChange={(e)=>updateLine(index,"irpf",e.target.value)}
@@ -788,16 +788,17 @@ export default function EmitirFactura() {
             {isEditing ? "Actualizar borrador" : "Crear borrador"}
           </Button>
 
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={handleEmitir}
-            disabled={!invoiceId || (billing && billing.restantes <= 0)}
-          >
-            Emitir factura
-          </Button>
-
           {invoiceId && (
+            <>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleEmitir}
+              disabled={billing && billing.restantes <= 0}
+            >
+              Emitir factura
+            </Button>
+
             <Button
               type="button"
               variant="secondary"
@@ -805,6 +806,7 @@ export default function EmitirFactura() {
             >
               Ver borrador
             </Button>
+            </>
           )}
         </div>
 
