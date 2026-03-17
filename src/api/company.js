@@ -20,3 +20,14 @@ export function updateCompany(data) {
     body: JSON.stringify(data),
   })
 }
+
+//subir Logo 
+export function uploadLogo(file) {
+  const formData = new FormData()
+  formData.append("logo", file)
+
+  return apiFetch("/companies/upload-logo", {
+    method: "POST",
+    body: formData
+  })
+}

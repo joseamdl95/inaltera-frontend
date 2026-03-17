@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getCompany, updateCompany, createCompany } from "../../api/company"
+import { getCompany, updateCompany, createCompany, uploadLogo } from "../../api/company"
 import { validarNif, validarCP } from "../../utils/validator"
 import { getSifs, createSif, updateSif, setDefaultSif } from "../../api/sif"
 
@@ -81,23 +81,10 @@ export default function Empresa() {
   async function handleLogoUpload(file) {
     if (!file) return
 
-    const formData = new FormData()
-    formData.append("logo", file)
-
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/companies/upload-logo`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        },
-        body: formData
-      })
+      const res = await uploadLogo(file)
 
-      if (!res.ok) throw new Error("Error subiendo logo")
-
-      const data = await res.json()
-
-      setLogoUrl(data.logo_url)
+      setLogoUrl(res.logo_url)
 
       alert("Logo subido correctamente")
 
