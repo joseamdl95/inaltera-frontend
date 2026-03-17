@@ -6,6 +6,10 @@ import { getClients } from "../../api/clients"
 import { getBillingStatus } from "../../api/billing"
 import { getSifs, createSif } from "../../api/sif"
 
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
+
 function normalizarNif(nif) {
   return nif
     ?.toUpperCase()
@@ -470,14 +474,17 @@ export default function EmitirFactura() {
   }
 
   return (
-    <div style={{ maxWidth: 500 }}>
-      <h1>Crear factura</h1>
+    <div className="max-w-5xl mx-auto space-y-6">
+      <h1 className="text-2xl font-bold">Crear factura</h1>
 
-      <form onSubmit={handleCrear}>
 
-        <div>
-          <label>Tipo de factura</label><br />
+      <form onSubmit={handleCrear}className="space-y-6">
+        {/* 🧾 TIPO */}
+        <Card>
+          <h3 className="font-semibold mb-4">Tipo de factura</h3>
+
           <select
+            className="border rounded-lg px-3 py-2 w-full"
             value={tipoFactura}
             onChange={(e) => setTipoFactura(e.target.value)}
           >
@@ -485,34 +492,34 @@ export default function EmitirFactura() {
             <option value="R1">Rectificativa por sustitución</option>
             <option value="R2">Rectificativa por diferencia</option>
           </select>
-        </div>
+        </Card>
 
+        {/* 🧾 RECTIFICATIVA */}
         {tipoFactura !== "F1" && (
-          <>
-            <div>
-              <label>ID factura original</label><br />
+          <Card>
+            <h3 className="font-semibold mb-4">Factura rectificativa</h3>
+            <div className="space-y-4">
               <input
                 type="text"
                 value={facturaRectificadaId}
                 onChange={(e) => setFacturaRectificadaId(e.target.value)}
-                placeholder="Ej: F-000001"
+                placeholder="Número de factura original (Ej: F-000001)"
                 required
               />
-            </div>
-
-            <div>
-              <label>Motivo de rectificación</label><br />
               <textarea
+                className="border rounded-lg px-3 py-2 w-full"
+                placeholder="Motivo de rectificación"
                 value={motivoRectificacion}
                 onChange={(e) => setMotivoRectificacion(e.target.value)}
                 required
               />
             </div>
-          </>
+          </Card>
         )}
 
-        <div>
-          <label>Fecha y hora de emisión</label><br />
+        {/* 📅 FECHA */}
+        <Card>
+          <h3 className="font-semibold mb-4">Fecha</h3>
           <input
             type="datetime-local"
             value={fechaEmision}
@@ -520,13 +527,17 @@ export default function EmitirFactura() {
             required
           />
           {errores.fechaEmision && (
-            <small style={{ color: "red" }}>{errores.fechaEmision}</small>
+            <p className="text-red-500 text-sm mt-1">
+            {errores.fechaEmision}
+          </p>
           )}
-        </div>
+        </Card>
 
-        <div>
-          <label>Sistema de facturación (SIF)</label><br />
+        {/* 🧩 SIF */}    
+        <Card>
+          <h3 className="font-semibold mb-4">Sistema de facturación</h3>
           <select
+            className="border rounded-lg px-3 py-2 w-full"
             value={selectedSifId}
             onChange={(e) => {
               const value = e.target.value
@@ -552,45 +563,28 @@ export default function EmitirFactura() {
           </select>
 
           {isNewSif && (
-            <div>
-              <input
-                placeholder="Alias"
-                value={nuevoSif.alias}
-                onChange={(e) =>
-                  setNuevoSif({ ...nuevoSif, alias: e.target.value })
-                }
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <input placeholder="Alias" value={nuevoSif.alias}
+                onChange={(e) => setNuevoSif({ ...nuevoSif, alias: e.target.value })}
               />
-
-              <input
-                placeholder="Software"
-                value={nuevoSif.software_nombre}
-                onChange={(e) =>
-                  setNuevoSif({ ...nuevoSif, software_nombre: e.target.value })
-                }
+              <input placeholder="Software" value={nuevoSif.software_nombre}
+                onChange={(e) => setNuevoSif({ ...nuevoSif, software_nombre: e.target.value })}
               />
-
-              <input
-                placeholder="Versión"
-                value={nuevoSif.version}
-                onChange={(e) =>
-                  setNuevoSif({ ...nuevoSif, version: e.target.value })
-                }
+              <input  placeholder="Versión" value={nuevoSif.version}
+                onChange={(e) => setNuevoSif({ ...nuevoSif, version: e.target.value })}
               />
-
               <input
-                placeholder="NIF (opcional)"
-                value={nuevoSif.nif}
-                onChange={(e) =>
-                  setNuevoSif({ ...nuevoSif, nif: e.target.value })
-                }
+                placeholder="NIF (opcional)" value={nuevoSif.nif} onChange={(e) => setNuevoSif({ ...nuevoSif, nif: e.target.value })}
               />
             </div>
           )}
-        </div>
+        </Card>
 
-        <div>
-          <label>Seleccionar cliente</label><br />
+        {/* 👤 CLIENTE */}
+        <Card>
+          <h3 className="font-semibold mb-4">Cliente</h3>
           <select
+            className="border rounded-lg px-3 py-2 w-full mb-4 disabled:bg-gray-100"
             value={selectedClientId}
             disabled={isR2}
             onChange={(e) => {
@@ -631,10 +625,14 @@ export default function EmitirFactura() {
               </option>
             ))}
           </select>
-        </div>
 
-        <>
-          <div>
+          {isR2 && (
+            <p className="text-xs text-gray-500 mb-2">
+              Datos heredados de la factura original
+            </p>
+          )}
+        
+          <div className="grid grid-cols-2 gap-4">
             <label>Cliente / Razón social</label><br />
             <input
               type="text"
@@ -643,9 +641,7 @@ export default function EmitirFactura() {
               disabled={isR2}
               required
             />
-          </div>
-
-          <div>
+         
             <label>NIF cliente</label><br />
             <input
               type="text"
@@ -657,9 +653,7 @@ export default function EmitirFactura() {
             {errores.clienteNif && (
               <small style={{ color: "red" }}>{errores.clienteNif}</small>
             )}
-          </div>
-
-          <div>
+          
             <label>Calle y número</label><br />
             <input
               type="text"
@@ -668,9 +662,7 @@ export default function EmitirFactura() {
               disabled={isR2}
               required
             />
-          </div>
 
-          <div>
             <label>Código postal</label><br />
             <input
               type="text"
@@ -679,9 +671,7 @@ export default function EmitirFactura() {
               disabled={isR2}
               required
             />
-          </div>
-
-          <div>
+  
             <label>Ciudad</label><br />
             <input
               type="text"
@@ -690,9 +680,7 @@ export default function EmitirFactura() {
               disabled={isR2}
               required
             />
-          </div>
-
-          <div>
+          
             <label>Provincia</label><br />
             <input
               type="text"
@@ -702,25 +690,16 @@ export default function EmitirFactura() {
               required
             />
           </div>
-        </>
+        </Card>  
 
-        <div>
-          <h3>Líneas de factura</h3>
+        {/* 📊 LÍNEAS */}
+        <Card>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-semibold">Líneas</h3>
+            <Button type="button" onClick={addLine}>+ Añadir</Button>
+          </div>
 
-          <table border="1" cellPadding="6" style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th>Concepto</th>
-                <th>Cantidad</th>
-                <th>Precio unitario (€)</th>
-                <th>IVA %</th>
-                <th>IRPF %</th>
-                <th>Total línea</th>
-                <th></th>
-              </tr>
-            </thead>
-
-            <tbody>
+            <div className="space-y-3">
               {lines.map((line, index) => {
                 const cantidad = Number(line.cantidad || 0)
                 const precio = Number(line.precio_unitario || 0)
@@ -731,118 +710,112 @@ export default function EmitirFactura() {
                 const totalLinea = base + cuotaIva - cuotaIrpf
 
                 return (
-                  <tr key={index}>
+                  <div key={index} className="grid grid-cols-6 gap-2 items-center">
+                    
+                    <input
+                      placeholder="Servicio/producto"
+                      value={line.concepto}
+                      onChange={(e)=>updateLine(index,"concepto",e.target.value)}
+                    />
 
-                    <td>
-                      <input
-                        placeholder="Servicio/producto"
-                        value={line.concepto}
-                        onChange={(e)=>updateLine(index,"concepto",e.target.value)}
-                      />
-                    </td>
+                    <input
+                      type="number"
+                      min={tipoFactura === "R2" ? undefined : "0"}
+                      step="1"
+                      value={line.cantidad}
+                      onChange={(e)=>updateLine(index,"cantidad",e.target.value)}
+                    />            
 
-                    <td>
-                      <input
-                        type="number"
-                        min={tipoFactura === "R2" ? undefined : "0"}
-                        step="1"
-                        value={line.cantidad}
-                        onChange={(e)=>updateLine(index,"cantidad",e.target.value)}
-                      />
-                    </td>              
+                    <input
+                      type="number"
+                      min={tipoFactura === "R2" ? undefined : "0"}
+                      step="0.01"
+                      value={line.precio_unitario}
+                      onChange={(e)=>updateLine(index,"precio_unitario",e.target.value)}
+                    />
+                   
+                    <input
+                      type="number"
+                      value={line.iva}
+                      onChange={(e)=>updateLine(index,"iva",e.target.value)}
+                    />
+                    
+                    <input
+                      type="number"
+                      value={line.irpf}
+                      onChange={(e)=>updateLine(index,"irpf",e.target.value)}
+                    />
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">
+                        {totalLinea.toFixed(2)}€
+                      </span>
 
-                    <td>
-                      <input
-                        type="number"
-                        min={tipoFactura === "R2" ? undefined : "0"}
-                        step="0.01"
-                        value={line.precio_unitario}
-                        onChange={(e)=>updateLine(index,"precio_unitario",e.target.value)}
-                      />
-                    </td>
-
-                    <td>
-                      <input
-                        type="number"
-                        value={line.iva}
-                        onChange={(e)=>updateLine(index,"iva",e.target.value)}
-                      />
-                    </td>
-
-                    <td>
-                      <input
-                        type="number"
-                        value={line.irpf}
-                        onChange={(e)=>updateLine(index,"irpf",e.target.value)}
-                      />
-                    </td>
-
-                    <td>
-                      {totalLinea.toFixed(2)} €
-                    </td>
-
-                    <td>
                       {lines.length > 1 && (
-                        <button type="button" onClick={()=>removeLine(index)}>
-                          Eliminar línea
-                        </button>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={()=>removeLine(index)}
+                        >
+                          ✕
+                        </Button>
                       )}
-                    </td>
-                      
-                  </tr>
+                    </div>
+                  </div>
                 )
               })}
-            </tbody>
-          </table>
+          </div>
+        </Card>
 
-          <br />
+        {/* 💰 TOTALES */}
+        <Card>
+          <h3 className="font-semibold mb-2">Resumen</h3>
+          
+          <div className="text-sm space-y-1">
+            <p>Base: {totalBase.toFixed(2)} €</p>
+            <p>IVA: {totalIva.toFixed(2)} €</p>
+            <p>IRPF: {totalIrpf.toFixed(2)} €</p>
 
-          <button type="button" onClick={addLine}>
-            + Añadir línea
-            </button>
+            <p className="font-bold text-lg mt-2">
+              Total: {totalFactura.toFixed(2)} €
+            </p>
+          </div>
+        </Card>
 
-        </div>
+        {/* 🔘 ACCIONES */}
+        <div className="flex gap-3 flex-wrap">
+          <Button type="submit">
+            {isEditing ? "Actualizar borrador" : "Crear borrador"}
+          </Button>
 
-        <hr />
-
-        <p>Base total: {totalBase.toFixed(2)} €</p>
-        <p>IVA total: {totalIva.toFixed(2)} €</p>
-        <p>IRPF total: {totalIrpf.toFixed(2)} €</p>
-
-        <strong>Total factura: {totalFactura.toFixed(2)} €</strong>
-
-        <br /><br />
-        <button type="submit">
-          {isEditing ? "Actualizar BORRADOR" : "Crear BORRADOR"}
-        </button>
-      </form>
-
-      <br />
-      {billing && (
-        <div style={{ marginBottom: 20 }}>
-          {billing.usadas} / {billing.limite} facturas usadas
-        </div>
-      )}
-    
-      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-
-        <button
-          onClick={handleEmitir}
-          disabled={!invoiceId || billing && billing.restantes <= 0}
-        >
-          Emitir factura
-        </button>
-
-        {invoiceId && (
-          <button
-            onClick={() => navigate(`/registro/${invoiceId}`)}
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={handleEmitir}
+            disabled={!invoiceId || (billing && billing.restantes <= 0)}
           >
-            Ver borrador
-          </button>
-        )}
+            Emitir factura
+          </Button>
 
-      </div>
+          {invoiceId && (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => navigate(`/registro/${invoiceId}`)}
+            >
+              Ver borrador
+            </Button>
+          )}
+        </div>
+
+      </form>
       
+      {/* 📊 USO */}
+      {billing && (
+        <p className="text-sm text-gray-500">
+          {billing.usadas} / {billing.limite} facturas usadas
+        </p>
+      )}      
     </div>
   )
 }

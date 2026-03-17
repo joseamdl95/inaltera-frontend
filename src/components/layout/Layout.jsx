@@ -11,10 +11,10 @@ export default function Layout() {
     }`
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-background">
       
       {/* 🔷 SIDEBAR */}
-      <aside className="w-64 bg-white border-r p-4 flex flex-col">
+      <aside className="w-64 bg-white border-r shadow-sm">
         <h2 className="text-xl font-bold mb-6">InAltera</h2>
 
         <nav className="flex flex-col gap-2">
@@ -76,7 +76,7 @@ export default function Layout() {
       <div className="flex-1 flex flex-col">
 
         {/* 🔹 TOPBAR */}
-        <header className="h-14 bg-white border-b flex items-center px-6">
+        <header className="h-14 bg-white border-b px-6 flex items-center">
           <h1 className="text-lg font-semibold">
             {location.pathname}
           </h1>
