@@ -3,6 +3,9 @@ import { useParams, useNavigate } from "react-router-dom"
 import { getFacturaById } from "../../api/invoices"
 import { emitirFactura, anularFactura, anularBorrador, descargarFactura, descargarXmlFactura, descargarXmlAnulacion } from "../../api/invoices"
 
+import Card from "../../components/common/Card"
+import Button from "../../components/common/Button"
+
 export default function DetalleFactura() {
 
     const { id } = useParams()
