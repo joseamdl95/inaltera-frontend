@@ -149,10 +149,6 @@ export default function Login() {
       {/* DERECHA - VERIFICADOR */}
       <div className="w-full max-w-4xl">
 
-        <h2 className="text-lg font-semibold mb-4">
-          Verificar factura XML
-        </h2>
-
         <Verificador />
 
       </div>
