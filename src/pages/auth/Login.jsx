@@ -3,6 +3,10 @@ import { useNavigate, Link } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import Verificador from "../facturacion/Verificador"
 
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
+
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -47,127 +51,109 @@ export default function Login() {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div className="flex min-h-screen">
 
       {/* IZQUIERDA - LOGIN */}
-      <div style={{
-        width: "50%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        borderRight: "1px solid #eee"
-      }}>
+      <div className="w-1/2 flex items-center justify-center bg-white">
 
-        <div style={{
-          width: 350,
-          padding: 20,
-          border: "1px solid #ddd",
-          borderRadius: 8
-        }}>
+        <Card className="w-full max-w-md">
 
-          <h1 style={{ textAlign: "center" }}>INALTERA</h1>
-          <h2 style={{ textAlign: "center" }}>
-            {show2FA ? "Verificación 2FA" : "Iniciar Sesión"}
+          <h1 className="text-2xl font-bold text-center mb-2">
+            INALTERA
+          </h1>
+
+          <h2 className="text-center text-gray-600 mb-6">
+            {show2FA ? "Verificación 2FA" : "Iniciar sesión"}
           </h2>
 
-          <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
+          <form onSubmit={handleSubmit} className="space-y-4">
 
             {!show2FA ? (
               <>
-                <input
+                <Input
                   type="email"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  style={{ width: "100%", padding: 10, marginBottom: 10 }}
                 />
 
-                <input
+                <Input
                   type="password"
                   placeholder="Contraseña"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  style={{ width: "100%", padding: 10, marginBottom: 10 }}
                 />
               </>
             ) : (
               <>
-                <p style={{ textAlign: "center" }}>
+                <p className="text-center text-sm text-gray-500">
                   Introduce el código 2FA
                 </p>
 
-                <input
+                <Input
                   type="text"
                   placeholder="000000"
                   value={code2fa}
                   onChange={(e) => setCode2fa(e.target.value)}
                   maxLength="6"
-                  style={{
-                    width: "100%",
-                    padding: 10,
-                    marginBottom: 10,
-                    textAlign: "center",
-                    fontSize: 20
-                  }}
+                  className="text-center text-lg tracking-widest"
                 />
               </>
             )}
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              style={{
-                width: "100%",
-                padding: 12,
-                backgroundColor: "#007bff",
-                color: "white",
-                border: "none",
-                borderRadius: 4
-              }}
+              className="w-full"
             >
-              {loading ? "Cargando..." : (show2FA ? "Verificar" : "Entrar")}
-            </button>
+              {loading
+                ? "Cargando..."
+                : show2FA
+                ? "Verificar"
+                : "Entrar"}
+            </Button>
 
             {error && (
-              <p style={{ color: "red", textAlign: "center", marginTop: 10 }}>
+              <p className="text-red-500 text-sm text-center">
                 {error}
               </p>
             )}
 
             {!show2FA && (
-              <div style={{ marginTop: 20, textAlign: "center" }}>
+              <div className="text-center text-sm text-gray-500 space-y-1">
                 <p>
-                  <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+                  <Link to="/forgot-password" className="text-blue-600 hover:underline">
+                    ¿Olvidaste tu contraseña?
+                  </Link>
                 </p>
                 <p>
-                  ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
+                  ¿No tienes cuenta?{" "}
+                  <Link to="/register" className="text-blue-600 hover:underline">
+                    Regístrate
+                  </Link>
                 </p>
               </div>
             )}
 
             {show2FA && (
-              <button
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={() => setShow2FA(false)}
-                style={{ marginTop: 10 }}
+                className="w-full"
               >
                 Volver
-              </button>
+              </Button>
             )}
 
           </form>
-        </div>
+        </Card>
       </div>
 
       {/* DERECHA - VERIFICADOR */}
-      <div style={{
-        width: "50%",
-        padding: 30,
-        overflow: "auto",
-        background: "#f7f7f7"
-      }}>
+      <div className="w-1/2 bg-gray-50 p-6 overflow-auto">
 
-        <h2 style={{ marginBottom: 20 }}>
+        <h2 className="text-lg font-semibold mb-4">
           Verificar factura XML
         </h2>
 
