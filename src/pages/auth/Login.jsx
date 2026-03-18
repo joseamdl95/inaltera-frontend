@@ -145,9 +145,9 @@ export default function Login() {
 
         </form>
       </Card>
-      
+     
       {/* DERECHA - VERIFICADOR */}
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-4xl mt-12">
 
         <Verificador />
 
