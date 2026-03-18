@@ -245,8 +245,29 @@ export default function CargarPDF() {
             </label>
 
             {archivo && (
-              <div className="mt-3 text-sm text-green-600">
-                📄 {archivo.name}
+              <div className="mt-4 flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+                
+                <div className="flex items-center gap-3">
+                  <span className="text-green-600 text-lg">✔</span>
+                  
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-green-800">
+                      Archivo listo
+                    </span>
+                    <span className="text-xs text-green-700">
+                      {archivo.name}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setArchivo(null)}
+                  className="text-xs text-gray-500 hover:text-red-500 transition"
+                >
+                  ✕
+                </button>
+
               </div>
             )}
           </Card>
