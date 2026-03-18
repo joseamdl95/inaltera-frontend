@@ -263,7 +263,7 @@ export default function RegistroFacturas() {
                           ? "bg-green-100 text-green-700"
                           : f.estado === "BORRADOR"
                           ? "bg-yellow-100 text-yellow-700"
-                          : invoice.estado === "BORRADOR_ANULADO"
+                          : f.estado === "BORRADOR_ANULADO"
                           ? "bg-red-100 text-red-700"
                           : f.estado === "ANULADA"
                           ? "bg-red-100 text-red-700"
