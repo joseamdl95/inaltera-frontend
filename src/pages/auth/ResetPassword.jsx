@@ -2,6 +2,10 @@ import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { resetPassword } from "../../api/user"
 
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
+
 export default function ResetPassword() {
   const [params] = useSearchParams()
   const token = params.get("token")
@@ -37,26 +41,42 @@ export default function ResetPassword() {
     }
 
   return (
-    <div>
-      <h1>Nueva contraseña</h1>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
 
-      <form onSubmit={handleSubmit}>
-        <input
+      <Card className="w-full max-w-md">
+
+        <h1 className="text-2xl font-bold text-center mb-2">
+          Nueva contraseña
+        </h1>
+
+        <p className="text-center text-gray-500 mb-6">
+          Introduce tu nueva contraseña
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+          <Input
             type="password"
             placeholder="Nueva contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-        />
+          />
 
-        <input
+          <Input
             type="password"
             placeholder="Repetir contraseña"
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
-        />
+          />
 
-        <button type="submit">Guardar</button>
-      </form>
+          <Button type="submit" className="w-full">
+            Guardar contraseña
+          </Button>
+
+        </form>
+
+      </Card>
+
     </div>
   )
 }
