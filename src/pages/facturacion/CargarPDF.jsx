@@ -246,7 +246,7 @@ export default function CargarPDF() {
 
             {archivo && (
               <div className="mt-3 text-sm text-green-600">
-                ✔ {archivo.name}
+                📄 {archivo.name}
               </div>
             )}
           </Card>
