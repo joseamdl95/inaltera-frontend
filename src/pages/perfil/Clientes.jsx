@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react"
 import { getClients, createClient, updateClient } from "../../api/clients"
 
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
+import Table from "../../components/common/Table"
+
 export default function Clientes() {
   const [clients, setClients] = useState([])
   const [loading, setLoading] = useState(true)
@@ -148,129 +153,133 @@ export default function Clientes() {
 
   if (loading) return <p>Cargando clientes...</p>
 
+  const columns = [
+    {
+      header: "Nombre",
+      render: (c) =>
+        editingId === c.id ? (
+          <Input
+            value={editForm.nombre}
+            onChange={(e) =>
+              setEditForm({ ...editForm, nombre: e.target.value })
+            }
+          />
+        ) : (
+          <span className="font-medium">{c.nombre}</span>
+        )
+    },
+    {
+      header: "NIF",
+      render: (c) =>
+        editingId === c.id ? (
+          <Input
+            value={editForm.nif}
+            onChange={(e) =>
+              setEditForm({ ...editForm, nif: e.target.value })
+            }
+          />
+        ) : (
+          c.nif
+        )
+    },
+    {
+      header: "Dirección",
+      render: (c) =>
+        editingId === c.id ? (
+          <div className="space-y-2">
+            <Input placeholder="Calle" value={calle} onChange={(e) => setCalle(e.target.value)} />
+            <Input placeholder="CP" value={cp} onChange={(e) => setCp(e.target.value)} />
+            <Input placeholder="Ciudad" value={ciudad} onChange={(e) => setCiudad(e.target.value)} />
+            <Input placeholder="Provincia" value={provincia} onChange={(e) => setProvincia(e.target.value)} />
+          </div>
+        ) : (
+          c.direccion
+        )
+    },
+    {
+      header: "Acciones",
+      render: (c) =>
+        editingId === c.id ? (
+          <div className="flex gap-2">
+            <Button onClick={handleUpdate}>
+              Guardar
+            </Button>
+            <Button variant="secondary" onClick={handleCancel}>
+              Cancelar
+            </Button>
+          </div>
+        ) : (
+          <Button
+            variant="secondary"
+            onClick={() => handleEdit(c)}
+          >
+            Editar
+          </Button>
+        )
+    }
+  ]
+
   return (
-    <div>
-      <h2>Clientes</h2>
+    <div className="max-w-6xl mx-auto space-y-6">
 
-      {/* 🔹 FORMULARIO CREAR */}
-      <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
-        <input
-          placeholder="Nombre"
-          value={form.nombre}
-          onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-        />
+      <h1 className="text-2xl font-bold">Clientes</h1>
 
-        <input
-          placeholder="NIF"
-          value={form.nif}
-          onChange={(e) => setForm({ ...form, nif: e.target.value })}
-        />
+      {/* 🔹 FORMULARIO */}
+      <Card>
+        <h3 className="font-semibold mb-4">Nuevo cliente</h3>
 
-        <input
-          placeholder="Calle"
-          value={calle}
-          onChange={(e) => setCalle(e.target.value)}
-        />
+        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-3">
 
-        <input
-          placeholder="CP"
-          value={cp}
-          onChange={(e) => setCp(e.target.value)}
-        />
+          <Input
+            placeholder="Nombre"
+            value={form.nombre}
+            onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+          />
 
-        <input
-          placeholder="Ciudad"
-          value={ciudad}
-          onChange={(e) => setCiudad(e.target.value)}
-        />
+          <Input
+            placeholder="NIF"
+            value={form.nif}
+            onChange={(e) => setForm({ ...form, nif: e.target.value })}
+          />
 
-        <input
-          placeholder="Provincia"
-          value={provincia}
-          onChange={(e) => setProvincia(e.target.value)}
-        />
+          <Input
+            placeholder="Calle"
+            value={calle}
+            onChange={(e) => setCalle(e.target.value)}
+          />
 
-        <button type="submit">Crear</button>
-      </form>
+          <Input
+            placeholder="Código postal"
+            value={cp}
+            onChange={(e) => setCp(e.target.value)}
+          />
+
+          <Input
+            placeholder="Ciudad"
+            value={ciudad}
+            onChange={(e) => setCiudad(e.target.value)}
+          />
+
+          <Input
+            placeholder="Provincia"
+            value={provincia}
+            onChange={(e) => setProvincia(e.target.value)}
+          />
+
+          <div className="col-span-2">
+            <Button type="submit">
+              Crear cliente
+            </Button>
+          </div>
+
+        </form>
+      </Card>
 
       {/* 🔹 TABLA */}
-      <table border="1" cellPadding="8">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>NIF</th>
-            <th>Dirección</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
+      <Card>
+        <Table columns={columns} data={clients} />
+      </Card>
 
-        <tbody>
-          {clients.map((c) => (
-            <tr key={c.id}>
-              {editingId === c.id ? (
-                <>
-                  <td>
-                    <input
-                      value={editForm.nombre}
-                      onChange={(e) =>
-                        setEditForm({ ...editForm, nombre: e.target.value })
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={editForm.nif}
-                      onChange={(e) =>
-                        setEditForm({ ...editForm, nif: e.target.value })
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      placeholder="Calle"
-                      value={calle}
-                      onChange={(e) => setCalle(e.target.value)}
-                    />
-
-                    <input
-                      placeholder="CP"
-                      value={cp}
-                      onChange={(e) => setCp(e.target.value)}
-                    />
-
-                    <input
-                      placeholder="Ciudad"
-                      value={ciudad}
-                      onChange={(e) => setCiudad(e.target.value)}
-                    />
-
-                    <input
-                      placeholder="Provincia"
-                      value={provincia}
-                      onChange={(e) => setProvincia(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <button onClick={handleUpdate}>Guardar</button>
-                    <button onClick={handleCancel}>Cancelar</button>
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td>{c.nombre}</td>
-                  <td>{c.nif}</td>
-                  <td>{c.direccion}</td>
-                  <td>
-                    <button onClick={() => handleEdit(c)}>
-                      Editar
-                    </button>
-                  </td>
-                </>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   )
 }
