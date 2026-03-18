@@ -198,6 +198,7 @@ export default function CargarPDF() {
               type="file"
               accept="application/pdf"
               onChange={handleFileChange}
+              sx={{bgcolor: "#CDCDCD"}}
               disabled={loading}
             />
             {archivo && (<p className="text-sm text-gray-600 mt-2">Archivo seleccionado: {archivo.name}</p>)}
