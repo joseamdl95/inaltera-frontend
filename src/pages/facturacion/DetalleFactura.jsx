@@ -215,7 +215,7 @@ export default function DetalleFactura() {
                             PDF
                         </Button>
 
-                        <Button variant="secondary" onClick={handleXml}>
+                        <Button onClick={handleXml}>
                             XML
                         </Button>
 

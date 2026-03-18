@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { apiFetch } from "../../api/client";
 
+import Card from "../../components/common/Card"
+import Button from "../../components/common/Button"
+
 export default function VerificadorXml() {
   const [files, setFiles] = useState([]);
   const [results, setResults] = useState([]);
@@ -42,90 +45,131 @@ export default function VerificadorXml() {
   const getStatusIcon = (status) => status ? "✅" : "❌";
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
-      <h2 style={{ borderBottom: "2px solid #007bff", paddingBottom: "10px" }}>
-        Verificador de Integridad XML (Verifactu)
-      </h2>
-      
-      <div style={{ margin: "20px 0", padding: "15px", backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
-        <input 
-          type="file" 
-          multiple 
-          accept=".xml" 
-          onChange={handleFileChange} 
-          disabled={loading}
-          style={{ marginBottom: "10px" }}
-        />
-        <br />
-        <button 
-          onClick={handleUpload} 
-          disabled={files.length === 0 || loading}
-          style={{ 
-            padding: "10px 20px", 
-            backgroundColor: "#007bff", 
-            color: "white", 
-            border: "none", 
-            borderRadius: "4px",
-            cursor: loading ? "not-allowed" : "pointer"
-          }}
-        >
-          {loading ? "Procesando..." : `Verificar ${files.length} facturas`}
-        </button>
-      </div>
+    <div className="max-w-6xl mx-auto space-y-6">
 
-      {results.length > 0 && (
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
-            <thead>
-              <tr style={{ backgroundColor: "#e9ecef" }}>
-                <th style={styles.th}>Archivo / Nº</th>
-                <th style={styles.th}>XML válido</th>
-                <th style={styles.th}>Hash correcto</th>
-                <th style={styles.th}>Cadena íntegra</th>
-                <th style={styles.th}>Registrado</th>
-                <th style={styles.th}>Coincide Contenido</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map((res, index) => (
-                <tr key={index} style={{ borderBottom: "1px solid #dee2e6" }}>
-                  <td style={styles.td}>
-                    <strong>{res.archivo}</strong><br />
-                    <small>{res.numero}</small>
-                  </td>
-                  <td style={{ ...styles.td, textAlign: "center" }}>
-                    {getStatusIcon(res.xml_valido)}
-                  </td>
-                  <td style={{ ...styles.td, textAlign: "center" }}>
-                    {getStatusIcon(res.hashCorrecto)}
-                  </td>
-                  <td style={{ ...styles.td, textAlign: "center" }}>
-                    {getStatusIcon(res.cadena_integra)}
-                  </td>
-                  <td style={{ ...styles.td, textAlign: "center" }}>
-                    {getStatusIcon(res.registrado)}
-                  </td>
-                  <td style={{ ...styles.td, textAlign: "center", color: res.coincide_BBDD ? "green" : "red" }}>
-                    {res.registrado ? (res.coincide_BBDD ? "✅ Idéntico" : "❌ Diferente") : "-"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <h1 className="text-2xl font-bold">
+        Verificador de Integridad XML (Verifactu)
+      </h1>
+      
+      {/* 📂 SUBIDA */}
+      <Card>
+        <h3 className="font-semibold mb-4">Subir XMLs</h3>
+
+        <label
+          onDrop={(e) => {
+            e.preventDefault()
+            const droppedFiles = Array.from(e.dataTransfer.files)
+
+            if (droppedFiles.length > 20) {
+              alert("Máximo 20 archivos")
+              return
+            }
+
+            setFiles(droppedFiles)
+          }}
+          onDragOver={(e) => e.preventDefault()}
+          className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition"
+        >
+          <span className="text-sm text-gray-600">
+            Haz clic o arrastra XMLs
+          </span>
+
+          <input
+            type="file"
+            multiple
+            accept=".xml"
+            onChange={handleFileChange}
+            disabled={loading}
+            className="hidden"
+          />
+        </label>
+
+        {files.length > 0 && (
+          <div className="mt-4 text-sm text-gray-600">
+            {files.length} archivo(s) seleccionados
+          </div>
+        )}
+
+        <div className="mt-4">
+          <Button
+            onClick={handleUpload}
+            disabled={files.length === 0 || loading}
+          >
+            {loading ? "Procesando..." : `Verificar (${files.length})`}
+          </Button>
         </div>
+      </Card>
+
+      {/* 📊 RESULTADOS */}
+      {results.length > 0 && (
+        <Card>
+          <h3 className="font-semibold mb-4">Resultados</h3>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+
+              <thead className="bg-gray-50 text-gray-600">
+                <tr>
+                  <th className="px-3 py-2 text-left">Archivo</th>
+                  <th className="px-3 py-2 text-center">XML</th>
+                  <th className="px-3 py-2 text-center">Hash</th>
+                  <th className="px-3 py-2 text-center">Cadena</th>
+                  <th className="px-3 py-2 text-center">Registrado</th>
+                  <th className="px-3 py-2 text-center">Contenido</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {results.map((res, index) => (
+                  <tr key={index} className="border-t">
+
+                    <td className="px-3 py-2">
+                      <div className="font-medium">{res.archivo}</div>
+                      <div className="text-xs text-gray-500">
+                        {res.numero}
+                      </div>
+                    </td>
+
+                    <td className="px-3 py-2 text-center">
+                      {res.xml_valido ? "✅" : "❌"}
+                    </td>
+
+                    <td className="px-3 py-2 text-center">
+                      {res.hashCorrecto ? "✅" : "❌"}
+                    </td>
+
+                    <td className="px-3 py-2 text-center">
+                      {res.cadena_integra ? "✅" : "❌"}
+                    </td>
+
+                    <td className="px-3 py-2 text-center">
+                      {res.registrado ? "✅" : "❌"}
+                    </td>
+
+                    <td className="px-3 py-2 text-center">
+                      {res.registrado ? (
+                        res.coincide_BBDD ? (
+                          <span className="text-green-600 font-medium">
+                            Idéntico
+                          </span>
+                        ) : (
+                          <span className="text-red-600 font-medium">
+                            Diferente
+                          </span>
+                        )
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+
+                  </tr>
+                ))}
+              </tbody>
+
+            </table>
+          </div>
+        </Card>
       )}
     </div>
   );
 }
-
-const styles = {
-  th: {
-    padding: "12px",
-    textAlign: "left",
-    borderBottom: "2px solid #dee2e6"
-  },
-  td: {
-    padding: "12px",
-    verticalAlign: "top"
-  }
-};
