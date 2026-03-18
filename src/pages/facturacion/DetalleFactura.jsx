@@ -85,126 +85,182 @@ export default function DetalleFactura() {
     }
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto space-y-6">
 
-      <h1>Factura {invoice.numero}</h1>
+        {/* 🧾 HEADER */}
+        <div className="flex justify-between items-start flex-wrap gap-3">
+            <h1 className="text-2xl font-bold">
+                Factura {invoice.numero}
+            </h1>
 
-      <p>
-        Estado: 
-        <strong style={{ marginLeft: 5 }}>
-            {invoice.estado}
-        </strong>
-    </p>
-
-      <p>Cliente: {invoice.cliente_nombre}</p>
-      <p>NIF: {invoice.cliente_nif}</p>
-      <p>Fecha: {invoice.fecha_emision}</p>
-      <p>Estado: {invoice.estado}</p>
-
-      <h2>Líneas</h2>
-
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Concepto</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>IVA</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {lines.map((l, i) => {
-
-           const total =
-            Number(l.base_imponible) +
-            Number(l.iva_cuota) -
-            Number(l.cuota_irpf)
-
-            return (
-              <tr key={i}>
-                <td>{l.descripcion}</td>
-                <td>{Number(l.cantidad)}</td>
-                <td>{Number(l.precio_unitario).toFixed(2)}€</td>
-                <td>{Number(l.iva_tipo)}%</td>
-                <td>{total.toFixed(2)}€</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-
-      <h3>Total factura: {Number(invoice.total).toFixed(2)}€</h3>
-
-      <h2>Acciones</h2>
-
-        <div style={{ display: "flex", gap: "10px", marginBottom: 20, flexWrap: "wrap" }}>
-
-        {invoice.estado === "BORRADOR" && (
-            <>
-            <button onClick={handleEditar}>
-                Editar borrador
-            </button>
-
-            <button onClick={handleEmitir}>
-                Emitir factura
-            </button>
-
-            <button onClick={handleAnularBorrador}>
-                Anular borrador
-            </button>
-            </>
-        )}
-
-        {invoice.estado === "EMITIDA" && (
-            <>
-            <button onClick={handlePdf}>
-                Descargar PDF
-            </button>
-
-            <button onClick={handleXml}>
-                Descargar XML
-            </button>
-
-            <button onClick={handleRectificativaSustitutiva}>
-                Rectificativa por sustitución
-            </button>
-
-            <button onClick={handleRectificativaDiferencia}>
-                Rectificativa por diferencia
-            </button>
-
-            <button
-                onClick={handleAnular}
-                style={{ backgroundColor: "#c0392b", color: "white" }}
-            >
-                Anular factura
-            </button>
-            </>
-        )}
-
-        {invoice.estado === "ANULADA" && (
-            <>
-            <button onClick={handlePdf}>
-                Descargar PDF
-            </button>
-
-            <button onClick={handleXml}>
-                Descargar XML
-            </button>
-
-            <button onClick={handleXmlAnulacion}>
-            XML anulación
-            </button>
-            </>
-        )}
-
-        {invoice.estado === "BORRADOR_ANULADO" && (
-            <p>Borrador anulado</p>
-        )}
-
+            <span className={`px-3 py-1 rounded-full text-xs font-medium
+                ${
+                invoice.estado === "EMITIDA"
+                    ? "bg-green-100 text-green-700"
+                    : invoice.estado === "BORRADOR"
+                    ? "bg-yellow-100 text-yellow-700"
+                    : invoice.estado === "BORRADOR_ANULADO"
+                    ? "bg-red-100 text-red-700"
+                    : invoice.estado === "ANULADA"
+                    ? "bg-red-100 text-red-700"
+                    : "bg-gray-100 text-gray-600"
+                }
+            `}>
+                {invoice.estado}
+            </span>
         </div>
+
+        {/* 👤 DATOS */}
+        <Card>
+            <h3 className="font-semibold mb-4">Datos de la factura</h3>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <span className="text-gray-500">Cliente</span>
+                    <p className="font-medium">{invoice.cliente_nombre}</p>
+                </div>
+
+                <div>
+                    <span className="text-gray-500">NIF</span>
+                    <p className="font-medium">{invoice.cliente_nif}</p>
+                </div>
+
+                <div>
+                    <span className="text-gray-500">Fecha</span>
+                    <p className="font-medium">{invoice.fecha_emision}</p>
+                </div>
+
+                <div>
+                    <span className="text-gray-500">Total</span>
+                    <p className="font-bold text-lg">
+                        {Number(invoice.total).toFixed(2)} €
+                    </p>
+                </div>
+            </div>
+        </Card>
+
+        {/* 📊 LÍNEAS */}
+        <Card>
+            <h3 className="font-semibold mb-4">Líneas</h3>
+
+            <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                <thead className="bg-gray-50 text-gray-600">
+                <tr>
+                    <th className="text-left px-3 py-2">Concepto</th>
+                    <th className="text-left px-3 py-2">Cantidad</th>
+                    <th className="text-left px-3 py-2">Precio</th>
+                    <th className="text-left px-3 py-2">IVA</th>
+                    <th className="text-left px-3 py-2">Total</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    {lines.map((l, i) => {
+                        const total =
+                        Number(l.base_imponible) +
+                        Number(l.iva_cuota) -
+                        Number(l.cuota_irpf)
+
+                        return (
+                        <tr key={i} className="border-t">
+                            <td className="px-3 py-2">{l.descripcion}</td>
+                            <td className="px-3 py-2">{Number(l.cantidad)}</td>
+                            <td className="px-3 py-2">
+                            {Number(l.precio_unitario).toFixed(2)} €
+                            </td>
+                            <td className="px-3 py-2">
+                            {Number(l.iva_tipo)}%
+                            </td>
+                            <td className="px-3 py-2 font-medium">
+                            {total.toFixed(2)} €
+                            </td>
+                        </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </Card>
+
+        {/* 🔘 ACCIONES */}
+        <Card>
+            <h3 className="font-semibold mb-4">Acciones</h3>
+
+            <div className="flex gap-3 flex-wrap">
+
+                {invoice.estado === "BORRADOR" && (
+                    <>
+                        <Button onClick={handleEditar}>
+                            Editar
+                        </Button>
+
+                        <Button onClick={handleEmitir}>
+                            Emitir
+                        </Button>
+
+                        <Button
+                            variant="secondary"
+                            onClick={handleAnularBorrador}
+                        >
+                            Anular borrador
+                        </Button>
+                    </>
+                )}
+
+                {invoice.estado === "EMITIDA" && (
+                    <>
+                        <Button onClick={handlePdf}>
+                            PDF
+                        </Button>
+
+                        <Button variant="secondary" onClick={handleXml}>
+                            XML
+                        </Button>
+
+                        <Button
+                            variant="secondary"
+                            onClick={handleRectificativaSustitutiva}
+                        >
+                            Rectificativa (Sust.)
+                        </Button>
+
+                        <Button
+                            variant="secondary"
+                            onClick={handleRectificativaDiferencia}
+                        >
+                            Rectificativa (Dif.)
+                        </Button>
+
+                        <Button
+                            onClick={handleAnular}
+                            className="bg-red-600 text-white hover:bg-red-700"
+                        >
+                            Anular factura
+                        </Button>
+                    </>
+                )}
+
+                {invoice.estado === "ANULADA" && (
+                    <>
+                        <Button onClick={handlePdf}>PDF</Button>
+
+                        <Button variant="secondary" onClick={handleXml}>
+                            XML
+                        </Button>
+
+                        <Button variant="secondary" onClick={handleXmlAnulacion}>
+                            XML anulación
+                        </Button>
+                    </>
+                )}
+
+                {invoice.estado === "BORRADOR_ANULADO" && (
+                    <p className="text-sm text-gray-500">
+                        Borrador anulado
+                    </p>
+                )}
+
+            </div>
+        </Card>
 
     </div>
   )
