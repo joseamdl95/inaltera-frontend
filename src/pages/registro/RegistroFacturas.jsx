@@ -1,8 +1,11 @@
-
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { listarFacturas, emitirFactura, anularFactura, anularBorrador, descargarFactura, descargarXmlFactura, descargarXmlAnulacion } from "../../api/invoices"
 import { getBillingStatus } from "../../api/billing"
+
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
 
 export default function RegistroFacturas() {
   
@@ -168,18 +171,15 @@ export default function RegistroFacturas() {
   }
 
   return (
-    <div>
-      <h1>Registro de facturas</h1>
+    <div className="max-w-7xl mx-auto space-y-6">
 
+      <h1 className="text-2xl font-bold">Registro de facturas</h1>
+
+      {/* 📊 ALERTAS INTEGRIDAD */}
       {logsIntegrity !== null && (
-        <div style={{
-          padding: "8px 12px",
-          marginBottom: 15,
-          borderRadius: 6,
-          backgroundColor: logsIntegrity ? "#e8f5e9" : "#ffebee",
-          color: logsIntegrity ? "#2e7d32" : "#c62828",
-          fontWeight: "bold"
-        }}>
+        <div className={`p-3 rounded-lg text-sm font-medium
+          ${logsIntegrity ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}
+        `}>
           {logsIntegrity
             ? "✔ Integridad de registros verificada"
             : "⚠ Integridad de logs comprometida"}
@@ -187,189 +187,230 @@ export default function RegistroFacturas() {
       )}
 
       {facturasIntegrity !== null && (
-        <div style={{
-          padding: "8px 12px",
-          marginBottom: 15,
-          borderRadius: 6,
-          backgroundColor: facturasIntegrity ? "#e8f5e9" : "#ffebee",
-          color: facturasIntegrity ? "#2e7d32" : "#c62828",
-          fontWeight: "bold"
-        }}>
+        <div className={`p-3 rounded-lg text-sm font-medium
+          ${facturasIntegrity ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}
+        `}>
           {facturasIntegrity
             ? "✔ Integridad de cadena de facturas verificada"
-            : "⚠ Integridad de facturación comprometida"}
+            : "⚠ Integridad comprometida"}
         </div>
       )}
 
-      {billing && (
-        <div style={{ marginBottom: 20 }}>
-          <strong>
-            {billing.usadas} / {billing.limite} facturas usadas este mes
-          </strong>
-        </div>
+      {/* 📊 USO */}
+        {billing && (
+        <p className="text-sm text-gray-500">
+          {billing.usadas} / {billing.limite} facturas usadas este mes
+        </p>
       )}
 
-      <div style={{ marginBottom: 20 }}>
-        <input
-          type="text"
-          placeholder="Buscar"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{ marginRight: 10 }}
-        />
+      {/* 🔎 FILTROS */}
+      <Card>
+        <div className="flex gap-3 flex-wrap">
+          <Input
+            placeholder="Buscar"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
 
-        <input
-          type="date"
-          value={desde}
-          onChange={(e) => setDesde(e.target.value)}
-          style={{ marginRight: 10 }}
-        />
+          <Input
+            type="date"
+            value={desde}
+            onChange={(e) => setDesde(e.target.value)}
+          />
 
-        <input
-          type="date"
-          value={hasta}
-          onChange={(e) => setHasta(e.target.value)}
-        />
-      </div>
+          <Input
+            type="date"
+            value={hasta}
+            onChange={(e) => setHasta(e.target.value)}
+          />
+        </div>
+      </Card>
 
-      <table border="1" cellPadding="8" cellSpacing="0">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Número</th>
-            <th>NIF de Cliente</th>
-            <th>Total (€)</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
+      {/* 📋 TABLA */}
+      <Card>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
 
-        <tbody>
-          {facturas.map((f) => (
-            <tr key={f.id}>
-              <td>{f.fecha}</td>
-              <td>{f.numero}</td>
-              <td>{f.cliente_nif}</td>
-              <td>{f.total.toFixed(2)}</td>
-              <td>{f.estado}</td>
-              <td>
-                <button onClick={() => navigate(`/registro/${f.id}`)}>
-                  Ver
-                </button>
-                {f.estado === "BORRADOR" && (
-                  <>
-                    <button disabled={billing && billing.restantes <= 0} onClick={() => handleEmitir(f.id)}>
-                      
-                      Emitir
-                    </button>
-                  
-                    <button onClick={() => handleAnularBorrador(f.id)}>
-                      Anular Borrador
-                    </button>
-                  </>
-                )}
-                {f.estado !== "BORRADOR" && !f.numero.includes("BORRADOR") && (
-                  <>
-                    <button onClick={() => descargarXml(f.id)}>
-                      Descargar XML
-                    </button>
+            <thead className="bg-gray-50 text-gray-600">
+              <tr>
+                <th className="px-3 py-2 text-left">Fecha</th>
+                <th className="px-3 py-2 text-left">Número</th>
+                <th className="px-3 py-2 text-left">Cliente</th>
+                <th className="px-3 py-2 text-left">Total</th>
+                <th className="px-3 py-2 text-left">Estado</th>
+                <th className="px-3 py-2 text-left">Acciones</th>
+              </tr>
+            </thead>
 
-                    {f.pdfDisponible && (
-                      <button onClick={() => descargarPdf(f.id)}>
-                        Descargar PDF
-                      </button>
-                    )}
+            <tbody>
+              {facturas.map((f) => (
+                <tr key={f.id} className="border-t">
 
-                  </>
+                  <td className="px-3 py-2">{f.fecha}</td>
 
-                )}
-                {f.estado === "EMITIDA"  && (
-                  <>
-                    
-                    <button 
-                      onClick={() => handleAnular(f.id)}
-                      style={{ marginLeft: 8, backgroundColor: "#c0392b", color: "white" }}
-                    >
-                      Anular
-                    </button>
-                  </>
-                )}
+                  <td className="px-3 py-2 font-medium">{f.numero}</td>
 
-                {f.estado === "ANULADA" && (
-                  <button onClick={() => descargarXmlAnulacionFactura(f.id)}>
-                    XML Anulación
-                  </button>
-                )}
+                  <td className="px-3 py-2">{f.cliente_nif}</td>
 
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div style={{ marginTop: 20 }}>
-        <button 
+                  <td className="px-3 py-2">
+                    {f.total.toFixed(2)} €
+                  </td>
+
+                  <td className="px-3 py-2">
+                    <span className={`px-2 py-1 rounded-full text-xs
+                      ${
+                        f.estado === "EMITIDA"
+                          ? "bg-green-100 text-green-700"
+                          : f.estado === "BORRADOR"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : invoice.estado === "BORRADOR_ANULADO"
+                          ? "bg-red-100 text-red-700"
+                          : f.estado === "ANULADA"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-gray-100 text-gray-600"
+                      }
+                    `}>
+                      {f.estado}
+                    </span>
+                  </td>
+
+                  <td className="px-3 py-2">
+                    <div className="flex gap-2 flex-wrap">
+
+                      <Button
+                        variant="secondary"
+                        onClick={() => navigate(`/registro/${f.id}`)}
+                      >
+                        Ver
+                      </Button>
+
+                      {f.estado === "BORRADOR" && (
+                        <>
+                          <Button
+                            onClick={() => handleEmitir(f.id)}
+                            disabled={billing && billing.restantes <= 0}
+                          >
+                            Emitir
+                          </Button>
+
+                          <Button
+                            onClick={() => handleAnularBorrador(f.id)}
+                            className="bg-orange-500 hover:bg-orange-600"
+                          >
+                            Anular Borrador
+                          </Button>
+                        </>
+                      )}
+
+                      {f.estado !== "BORRADOR" && !f.numero.includes("BORRADOR") && (
+                        <>
+                          <Button
+                            variant="secondary"
+                            onClick={() => descargarXml(f.id)}
+                          >
+                            XML
+                          </Button>
+
+                          {f.pdfDisponible && (
+                            <Button
+                              variant="secondary"
+                              onClick={() => descargarPdf(f.id)}
+                            >
+                              PDF
+                            </Button>
+                          )}
+                        </>
+                      )}
+
+                      {f.estado === "EMITIDA" && (
+                        <Button
+                          onClick={() => handleAnular(f.id)}
+                          className="bg-red-600 text-white hover:bg-red-700"
+                        >
+                          Anular
+                        </Button>
+                      )}
+
+                      {f.estado === "ANULADA" && (
+                        <Button
+                          variant="secondary"
+                          onClick={() => descargarXmlAnulacionFactura(f.id)}
+                        >
+                          XML Anulación
+                        </Button>
+                      )}
+
+                    </div>
+                  </td>
+
+                </tr>
+              ))}
+            </tbody>
+
+          </table>
+        </div>
+      </Card>
+
+      {/* 📄 PAGINACIÓN */}
+      <div className="flex items-center justify-between">
+
+        <Button
+          variant="secondary"
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
         >
           Anterior
-        </button>
+        </Button>
 
-        <span style={{ margin: "0 10px" }}>
-           Página {page} de {totalPages}
+        <span className="text-sm text-gray-500">
+          Página {page} de {totalPages}
         </span>
 
-        <button 
+        <Button
+          variant="secondary"
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
         >
           Siguiente
-        </button>
+        </Button>
+
       </div>
+
+      {/* 🧾 MODAL */}
       {showModal && (
-          <div style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-          }}>
-            <div style={{
-              backgroundColor: "white",
-              padding: 20,
-              borderRadius: 8,
-             width: 400
-            }}>
-              <h3>Motivo de anulación</h3>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
 
-              <textarea
-                value={motivo}
-                onChange={(e) => setMotivo(e.target.value)}
-                rows={4}
-                style={{ width: "100%", marginBottom: 10 }}
-              />
+          <div className="bg-white rounded-xl p-6 w-full max-w-md space-y-4">
 
-              <div style={{ textAlign: "right" }}>
-                <button 
-                  onClick={() => setShowModal(false)}
-                  style={{ marginRight: 10 }}
-                >
-                  Cancelar
-                </button>
+            <h3 className="font-semibold">Motivo de anulación</h3>
 
-                <button 
-                  onClick={confirmarAnulacion}
-                  style={{ backgroundColor: "#c0392b", color: "white" }}
-                >
-                  Confirmar Anulación
-                </button>
-              </div>
+            <textarea
+              value={motivo}
+              onChange={(e) => setMotivo(e.target.value)}
+              rows={4}
+              className="w-full border rounded-lg px-3 py-2"
+            />
+
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="secondary"
+                onClick={() => setShowModal(false)}
+              >
+                Cancelar
+              </Button>
+
+              <Button
+                onClick={confirmarAnulacion}
+                className="bg-red-600 text-white hover:bg-red-700"
+              >
+                Confirmar
+              </Button>
             </div>
+
           </div>
-        )}
+        </div>
+      )}
+
     </div>
   )
 }
