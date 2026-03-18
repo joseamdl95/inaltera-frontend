@@ -26,6 +26,8 @@ export default function CargarPDF() {
     nif: ""
   })
 
+  const [dragging, setDragging] = useState(false)
+
   useEffect(() => {
     getBillingStatus()
       .then(setBilling)
@@ -108,6 +110,24 @@ export default function CargarPDF() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const file = e.dataTransfer.files[0]
+
+    if (file && file.type === "application/pdf") {
+      setArchivo(file)
+    } else {
+      alert("Solo se permiten PDFs")
+    }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
   }
 
   return (
@@ -194,7 +214,18 @@ export default function CargarPDF() {
           <Card>
             <h3 className="font-semibold mb-4">Archivo PDF</h3>
 
-            <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition">
+            <label 
+              onDragEnter={() => setDragging(true)}
+              onDragLeave={() => setDragging(false)}
+              onDrop={(e) => {
+                setDragging(false)
+                handleDrop(e)
+              }}
+              onDragOver={handleDragOver}
+              className={`flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded-xl cursor-pointer transition
+                ${dragging ? "border-blue-500 bg-blue-50" : "border-gray-300"}
+              `}
+            >
 
               <span className="text-sm text-gray-600">
                 Haz clic para subir un PDF
