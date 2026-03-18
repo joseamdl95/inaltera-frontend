@@ -46,24 +46,31 @@ export default function ResetPassword() {
       <Card className="w-full max-w-md">
 
         <h1 className="text-2xl font-bold text-center mb-2">
-          Recuperar contraseña
+          Nueva contraseña
         </h1>
 
         <p className="text-center text-gray-500 mb-6">
-          Te enviaremos un enlace para restablecerla
+          Introduce tu nueva contraseña
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
           <Input
-            type="email"
-            placeholder="Tu email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="password"
+            placeholder="Nueva contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <Input
+            type="password"
+            placeholder="Repetir contraseña"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
           />
 
           <Button type="submit" className="w-full">
-            Enviar
+            Guardar contraseña
           </Button>
 
         </form>
