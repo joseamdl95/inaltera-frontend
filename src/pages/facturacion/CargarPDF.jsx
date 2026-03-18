@@ -193,15 +193,31 @@ export default function CargarPDF() {
           {/* 📄 PDF */}
           <Card>
             <h3 className="font-semibold mb-4">Archivo PDF</h3>
-            
-            <Input
-              type="file"
-              accept="application/pdf"
-              onChange={handleFileChange}
-              sx={{bgcolor: "#CDCDCD"}}
-              disabled={loading}
-            />
-            {archivo && (<p className="text-sm text-gray-600 mt-2">Archivo seleccionado: {archivo.name}</p>)}
+
+            <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition">
+
+              <span className="text-sm text-gray-600">
+                Haz clic para subir un PDF
+              </span>
+
+              <span className="text-xs text-gray-400 mt-1">
+                o arrástralo aquí
+              </span>
+
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                disabled={loading}
+                className="hidden"
+              />
+            </label>
+
+            {archivo && (
+              <div className="mt-3 text-sm text-green-600">
+                ✔ {archivo.name}
+              </div>
+            )}
           </Card>
 
           {/* 🔘 ACCIÓN */}
