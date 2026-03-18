@@ -3,6 +3,10 @@ import { useNavigate, Link } from "react-router-dom"
 import { registerUser } from "../../api/auth"
 import { useAuth } from "../../context/AuthContext"
 
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
+
 export default function Register() {
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -49,78 +53,88 @@ export default function Register() {
   }
 
   return (
-    <div style={{ maxWidth: 400, margin: "auto" }}>
-      <h1>Crear cuenta</h1>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label><br />
-          <input
+      <Card className="w-full max-w-md">
+
+        <h1 className="text-2xl font-bold text-center mb-2">
+          Crear cuenta
+        </h1>
+
+        <p className="text-center text-gray-500 mb-6">
+          Empieza a usar Inaltera
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+          <Input
             type="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>   
 
-        <div>
-          <label>Nombre</label><br />
-          <input
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
-        </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              type="text"
+              placeholder="Nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
+            />
 
-        <div>
-          <label>Apellidos</label><br />
-          <input
-            type="text"
-            value={apellidos}
-            onChange={(e) => setApellidos(e.target.value)}
-            required
-          />
-        </div>
+            <Input
+              type="text"
+              placeholder="Apellidos"
+              value={apellidos}
+              onChange={(e) => setApellidos(e.target.value)}
+              required
+            />
+          </div>
 
-        <div>
-          <label>Teléfono (opcional)</label><br />
-          <input
+          <Input
             type="text"
+            placeholder="Teléfono (opcional)"
             value={telefono}
             onChange={(e) => setTelefono(e.target.value)}
           />
-        </div> 
 
-        <div>
-          <label>Contraseña</label><br />
-          <input
+          <Input
             type="password"
+            placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
 
-        <div>
-          <label>Repetir contraseña</label><br />
-          <input
+          <Input
             type="password"
+            placeholder="Repetir contraseña"
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
             required
           />
+
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full"
+          >
+            {loading ? "Creando cuenta..." : "Crear cuenta"}
+          </Button>
+
+        </form>
+
+        <div className="text-center text-sm text-gray-500 mt-4">
+          ¿Ya tienes cuenta?{" "}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Inicia sesión
+          </Link>
         </div>
 
-        <br />
-        <button disabled={loading}>
-          Crear cuenta
-        </button>
-      </form>
+      </Card>
 
-      <p style={{ marginTop: 10 }}>
-        ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
-      </p>
     </div>
   )
 }
