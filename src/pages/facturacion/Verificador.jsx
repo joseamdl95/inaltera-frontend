@@ -10,15 +10,12 @@ export default function VerificadorXml() {
   const [loading, setLoading] = useState(false);
   const[sif, setSif]= useState();
 
+  const [dragging, setDragging] = useState(false)
+
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    if (selectedFiles.length > 20) {
-      alert("Máximo 20 archivos permitidos");
-      e.target.value = null; // Limpiar selección
-      return;
-    }
-    setFiles(selectedFiles);
-  };
+    const selectedFiles = Array.from(e.target.files)
+    handleFiles(selectedFiles)
+  }
 
   const handleUpload = async () => {
     setLoading(true);
@@ -42,7 +39,28 @@ export default function VerificadorXml() {
     }
   };
 
-  const getStatusIcon = (status) => status ? "✅" : "❌";
+  const handleFiles = (newFiles) => {
+    if (newFiles.length > 20) {
+      alert("Máximo 20 archivos")
+      return
+    }
+
+    setFiles(newFiles)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setDragging(false)
+
+    const droppedFiles = Array.from(e.dataTransfer.files)
+
+    handleFiles(droppedFiles)
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+  }
+
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -56,22 +74,16 @@ export default function VerificadorXml() {
         <h3 className="font-semibold mb-4">Subir XMLs</h3>
 
         <label
-          onDrop={(e) => {
-            e.preventDefault()
-            const droppedFiles = Array.from(e.dataTransfer.files)
-
-            if (droppedFiles.length > 20) {
-              alert("Máximo 20 archivos")
-              return
-            }
-
-            setFiles(droppedFiles)
-          }}
-          onDragOver={(e) => e.preventDefault()}
-          className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition"
+          onDragEnter={() => setDragging(true)}
+          onDragLeave={() => setDragging(false)}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          className={`flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded-xl cursor-pointer transition
+            ${dragging ? "border-blue-500 bg-blue-50" : "border-gray-300"}
+          `}
         >
           <span className="text-sm text-gray-600">
-            Haz clic o arrastra XMLs
+            {dragging ? "Suelta los archivos aquí" : "Haz clic o arrastra XMLs"}
           </span>
 
           <input
