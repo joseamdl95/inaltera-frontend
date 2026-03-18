@@ -194,7 +194,7 @@ export default function CargarPDF() {
           <Card>
             <h3 className="font-semibold mb-4">Archivo PDF</h3>
             
-            <Imput
+            <Input
               type="file"
               accept="application/pdf"
               onChange={handleFileChange}
