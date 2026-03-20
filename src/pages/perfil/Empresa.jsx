@@ -220,7 +220,7 @@ export default function Empresa() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label>C.P.</label><br />
-              <input 
+              <Input 
                 style={{ width: "80px" }}
                 value={codigoPostal} 
                 onChange={(e) => setCodigoPostal(e.target.value)} 
@@ -229,7 +229,7 @@ export default function Empresa() {
             </div>
             <div style={{ flex: 1 }}>
               <label>Ciudad</label><br />
-              <input 
+              <Input 
                 style={{ width: "100%" }}
                 value={ciudad} 
                 onChange={(e) => setCiudad(e.target.value)} 
@@ -239,7 +239,7 @@ export default function Empresa() {
           
             <div>
               <label>Provincia</label><br />
-              <input 
+              <Input 
                 value={provincia} 
                 onChange={(e) => setProvincia(e.target.value)} 
                 required
