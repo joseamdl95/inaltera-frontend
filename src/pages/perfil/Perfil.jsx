@@ -7,7 +7,7 @@ export default function Perfil() {
     ${
       isActive
         ? "bg-blue-100 text-blue-700"
-        : "text-gray-600 hover:bg-gray-100"
+        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
     }`
 
   return (
@@ -19,7 +19,7 @@ export default function Perfil() {
       </div>
 
       {/* 🔥 NAV TABS */}
-      <div className="bg-white border-b rounded-xl p-2 flex gap-2 w-fit shadow-sm">
+      <div className="bg-white border rounded-xl p-2 flex gap-2 w-fit shadow-sm">
         <NavLink to="usuario" className={linkClass}>
           Usuario
         </NavLink>
