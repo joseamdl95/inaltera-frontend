@@ -8,6 +8,7 @@ export default function Header() {
             flex items-center 
             px-10 
             shadow-sm
+            shrink-0
         ">
 
         {/* 🖼 LOGO */}

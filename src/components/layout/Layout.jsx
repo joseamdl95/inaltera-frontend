@@ -26,7 +26,7 @@ export default function Layout() {
     }`
 
   return (
-    <div className="h-screen flex flex-col bg-background">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
 
       <Header />
 
@@ -35,7 +35,7 @@ export default function Layout() {
         {/* 🔷 SIDEBAR */}
         <aside className={`
           bg-white border-r shadow-sm flex flex-col transition-all
-          h-screen sticky top-0
+          h-full
           ${collapsed ? "w-16" : "w-64"}
         `}>
           <div
@@ -186,7 +186,7 @@ export default function Layout() {
         
 
         {/* 🔹 MAIN */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 overflow-y-auto">
           <Outlet />
         </main>
                
