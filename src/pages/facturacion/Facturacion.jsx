@@ -1,7 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom"
 
 export default function Facturacion() {
-   const linkClass = ({ isActive }) =>
+
+  const linkClass = ({ isActive }) =>
     `px-4 py-2 rounded-lg text-sm font-medium transition
     ${
       isActive

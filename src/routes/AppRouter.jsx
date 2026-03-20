@@ -124,18 +124,21 @@ export default function AppRouter() {
           </Route>
 
           {/* 📄 FACTURACIÓN */}
-          <Route
-            path="/facturacion/emitir"
-            element={<RequireCompany><EmitirFactura /></RequireCompany>}
-          />
-          <Route
-            path="/facturacion/pdf"
-            element={<RequireCompany><CargarPDF /></RequireCompany>}
-          />
-          <Route
-            path="/facturacion/editar/:id"
-            element={<RequireCompany><EmitirFactura /></RequireCompany>}
-          />
+          <Route path="/facturacion" element={<Facturacion />}>
+            <Route index element={<FacturacionRedirect />} />
+            <Route
+              path="/facturacion/emitir"
+              element={<RequireCompany><EmitirFactura /></RequireCompany>}
+            />
+            <Route
+              path="/facturacion/pdf"
+              element={<RequireCompany><CargarPDF /></RequireCompany>}
+            />
+            <Route
+              path="/facturacion/editar/:id"
+              element={<RequireCompany><EmitirFactura /></RequireCompany>}
+            />
+            </Route>
 
           {/* 🔍 VERIFICADOR */}
           <Route path="/verificador" element={<Verificador />} />
