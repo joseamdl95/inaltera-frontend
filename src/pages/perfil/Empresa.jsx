@@ -3,6 +3,10 @@ import { getCompany, updateCompany, createCompany, uploadLogo } from "../../api/
 import { validarNif, validarCP } from "../../utils/validator"
 import { getSifs, createSif, updateSif, setDefaultSif } from "../../api/sif"
 
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
+
 export default function Empresa() {
   const [hasCompany, setHasCompany] = useState(false)
 
