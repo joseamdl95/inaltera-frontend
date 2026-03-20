@@ -1,4 +1,5 @@
-import { NavLink, Outlet, useLocation, useState } from "react-router-dom"
+import { NavLink, Outlet, useLocation } from "react-router-dom"
+import { useState } from "react"
 import { useAuth } from "../../context/AuthContext"
 
 export default function Layout() {
