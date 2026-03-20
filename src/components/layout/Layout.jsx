@@ -10,6 +10,8 @@ export default function Layout() {
   flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition
   bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer
   `
+  const isFacturacionActive = location.pathname.startsWith("/facturacion")
+  const isPerfilActive = location.pathname.startsWith("/perfil")
 
   const [collapsed, setCollapsed] = useState(false)
   const [openMenus, setOpenMenus] = useState({facturacion: true, perfil: false})
@@ -70,7 +72,9 @@ export default function Layout() {
                   })
                 }
               }}
-              className={menuButtonClass}
+              className={`${menuButtonClass} ${
+                isFacturacionActive ? "bg-blue-100 text-blue-700" : ""
+              }`}
             >
               <span>📄</span>
               {!collapsed && <span className="flex-1">Facturación</span>}
@@ -107,7 +111,9 @@ export default function Layout() {
                   })
                 }
               }}
-              className={menuButtonClass}
+              className={`${menuButtonClass} ${
+                isFacturacionActive ? "bg-blue-100 text-blue-700" : ""
+              }`}
             >
               <span>👤</span>
               {!collapsed && <span className="flex-1">Perfil</span>}
