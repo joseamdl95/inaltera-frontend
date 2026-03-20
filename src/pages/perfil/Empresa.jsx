@@ -145,202 +145,239 @@ export default function Empresa() {
   }
 
   return (
-    <div style={{ maxWidth: 600 }}>
+    <div className="max-w-5xl mx-auto space-y-6">
+      
+      {/* 🖼 LOGO */}
+      <Card>
+        <h3 className="font-semibold mb-4">Logo empresa</h3>
 
-      <div>
-      <label>Logo empresa</label><br />
+        <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition">
 
-      <input
-        type="file"
-        accept="image/png, image/jpeg"
-        onChange={(e) => handleLogoUpload(e.target.files[0])}
-      />
+          <span className="text-sm text-gray-600">
+            Haz clic para subir logo
+          </span>
 
-      {/* PREVIEW */}
-      {logoUrl && (
-        <div style={{ marginTop: 10 }}>
-          <img 
-            src={logoUrl + "?t=" + Date.now()} 
-            style={{ height: 80, objectFit: "contain" }}
+          <input
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={(e) => handleLogoUpload(e.target.files[0])}
+            className="hidden"
           />
-        </div>
-      )}
-    </div>
+        </label>
 
-      <h1>
-        {hasCompany ? "Datos fiscales (empresa)" : "Crear empresa"}
-      </h1>
+        {/* PREVIEW */}
+        {logoUrl && (
+          <div className="mt-4 flex justify-center">
+            <img
+              src={logoUrl + "?t=" + Date.now()}
+              className="h-20 object-contain"
+            />
+          </div>
+        )}
+      </Card>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Razón social</label><br />
-          <input 
-            name="razon_social" 
-            value={empresa.razon_social} 
-            onChange={handleEmpresaChange} 
-            required  
-          />
-        </div>
+      {/* 🏢 EMPRESA */}
+      <Card>
+        <h2 className="text-xl font-semibold mb-4">
+          {hasCompany ? "Datos fiscales" : "Crear empresa"}
+        </h2>
 
-        <div>
-          <label>NIF</label><br />
-          <input 
-            name="nif" 
-            value={empresa.nif} 
-            onChange={handleEmpresaChange}
-            required 
-          />
-        </div>
-
-        <div>
-          <label>Calle</label><br />
-          <input 
-            value={calle} 
-            onChange={e => setCalle(e.target.value)} 
-            placeholder="Calle Mayor 12, 3ºA"
-            required
-          />
-        </div>
-
-        <div style={{ display: "flex", gap: "10px" }}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label>C.P.</label><br />
-            <input 
-              style={{ width: "80px" }}
-              value={codigoPostal} 
-              onChange={(e) => setCodigoPostal(e.target.value)} 
-              required
+            <label>Razón social</label><br />
+            <Input 
+              name="razon_social" 
+              value={empresa.razon_social} 
+              onChange={handleEmpresaChange} 
+              required  
             />
           </div>
-          <div style={{ flex: 1 }}>
-            <label>Ciudad</label><br />
-            <input 
-              style={{ width: "100%" }}
-              value={ciudad} 
-              onChange={(e) => setCiudad(e.target.value)} 
-              required
-            />
-          </div>
-        </div>
 
-        <div>
-          <label>Provincia</label><br />
-          <input 
-            value={provincia} 
-            onChange={(e) => setProvincia(e.target.value)} 
-            required
+          <div>
+            <label>NIF</label><br />
+            <Input 
+              name="nif" 
+              value={empresa.nif} 
+              onChange={handleEmpresaChange}
+              required 
+            />
+          </div>
+
+          <div>
+            <label>Calle</label><br />
+            <Input 
+              value={calle} 
+              onChange={e => setCalle(e.target.value)} 
+              placeholder="Calle Mayor 12 3ºA"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label>C.P.</label><br />
+              <input 
+                style={{ width: "80px" }}
+                value={codigoPostal} 
+                onChange={(e) => setCodigoPostal(e.target.value)} 
+                required
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label>Ciudad</label><br />
+              <input 
+                style={{ width: "100%" }}
+                value={ciudad} 
+                onChange={(e) => setCiudad(e.target.value)} 
+                required
+              />
+            </div>
+          
+            <div>
+              <label>Provincia</label><br />
+              <input 
+                value={provincia} 
+                onChange={(e) => setProvincia(e.target.value)} 
+                required
+              />
+            </div>
+          </div>
+
+          <Button type="submit">
+            {hasCompany ? "Guardar cambios" : "Crear empresa"}
+          </Button>
+        </form>
+      </Card>
+
+      {/* ⚙️ SIFS */}
+      <Card>
+        <h3 className="font-semibold mb-4">
+          Sistemas de facturación (SIF)
+        </h3>
+
+        <div className="space-y-3">
+
+          {sifs.map(s => (
+            <div
+              key={s.id}
+              className="border rounded-lg p-4 flex flex-col gap-2"
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <div className="font-medium">{s.alias}</div>
+                  <div className="text-sm text-gray-500">
+                    {s.software_nombre} v{s.version}
+                  </div>
+                </div>
+
+                {s.es_default && (
+                  <span className="text-green-600 text-sm font-medium">
+                    ✔ Predeterminado
+                  </span>
+                )}
+              </div>
+
+              <div className="flex gap-2 flex-wrap">
+                {!s.es_default && (
+                  <Button
+                    variant="secondary"
+                    onClick={() => setDefaultSif(s.id).then(fetchSifs)}
+                  >
+                    Hacer predeterminado
+                  </Button>
+                )}
+
+                {s.software_nombre !== "InAltera" && (
+                  <Button
+                    variant="secondary"
+                    onClick={() => setEditingSif(s)}
+                  >
+                    Editar
+                  </Button>
+                )}
+              </div>
+
+              {/* EDIT */}
+              {editingSif?.id === s.id && (
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                  <Input
+                    value={editingSif.alias}
+                    onChange={e => setEditingSif({ ...editingSif, alias: e.target.value })}
+                    placeholder="Alias"
+                  />
+
+                  <Input
+                    value={editingSif.version}
+                    onChange={e => setEditingSif({ ...editingSif, version: e.target.value })}
+                    placeholder="Versión"
+                  />
+
+                  <Input
+                    value={editingSif.nif || ""}
+                    onChange={e => setEditingSif({ ...editingSif, nif: e.target.value })}
+                    placeholder="NIF"
+                  />
+
+                  <Button
+                    onClick={async () => {
+                      await updateSif(s.id, editingSif)
+                      setEditingSif(null)
+                      fetchSifs()
+                    }}
+                  >
+                    Guardar
+                  </Button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* ➕ NUEVO SIF */}
+      <Card>
+        <h3 className="font-semibold mb-4">Nuevo SIF</h3>
+
+        <div className="grid grid-cols-4 gap-3">
+
+          <Input
+            placeholder="Alias"
+            value={nuevoSif.alias}
+            onChange={e => setNuevoSif({ ...nuevoSif, alias: e.target.value })}
+          />
+
+          <Input
+            placeholder="Software"
+            value={nuevoSif.software_nombre}
+            onChange={e => setNuevoSif({ ...nuevoSif, software_nombre: e.target.value })}
+          />
+
+          <Input
+            placeholder="Versión"
+            value={nuevoSif.version}
+            onChange={e => setNuevoSif({ ...nuevoSif, version: e.target.value })}
+          />
+
+          <Input
+            placeholder="NIF"
+            value={nuevoSif.nif}
+            onChange={e => setNuevoSif({ ...nuevoSif, nif: e.target.value })}
           />
         </div>
 
-        <br />
-        <button type="submit">
-          {hasCompany ? "Guardar cambios" : "Crear empresa"}
-        </button>
-      </form>
-
-      <hr style={{ margin: "30px 0" }} />
-
-      <h2>Sistemas de facturación (SIF)</h2>
-
-      {/* LISTADO */}
-      {sifs.map(s => (
-        <div key={s.id} style={{ border: "1px solid #ccc", padding: 10, marginBottom: 10 }}>
-          
-          <strong>{s.alias}</strong>  
-          <div>{s.software_nombre} v{s.version}</div>
-
-          {s.es_default && (
-            <div style={{ color: "green" }}>✔ Predeterminado</div>
-          )}
-
-          {/* BOTONES */}
-          <div style={{ marginTop: 5 }}>
-            
-            {!s.es_default && (
-              <button onClick={() => setDefaultSif(s.id).then(fetchSifs)}>
-                Hacer Predeterminado
-              </button>
-            )}
-
-            {/* NO editable si es sistema */}
-            {s.software_nombre !== "InAltera" && (
-              <button onClick={() => setEditingSif(s)}>
-                Editar
-              </button>
-            )}
-          </div>
-
-          {/* EDITAR */}
-          {editingSif?.id === s.id && (
-            <div style={{ marginTop: 10 }}>
-              <input
-                value={editingSif.alias}
-                onChange={e => setEditingSif({ ...editingSif, alias: e.target.value })}
-                placeholder="Alias"
-              />
-
-              <input
-                value={editingSif.version}
-                onChange={e => setEditingSif({ ...editingSif, version: e.target.value })}
-                placeholder="Versión"
-              />
-
-              <input
-                value={editingSif.nif || ""}
-                onChange={e => setEditingSif({ ...editingSif, nif: e.target.value })}
-                placeholder="NIF"
-              />
-
-              <button
-                onClick={async () => {
-                  await updateSif(s.id, editingSif)
-                  setEditingSif(null)
-                  fetchSifs()
-                }}
-              >
-                Guardar
-              </button>
-            </div>
-          )}
+        <div className="mt-4">
+          <Button
+            onClick={async () => {
+              await createSif(nuevoSif)
+              setNuevoSif({ alias: "", software_nombre: "", version: "", nif: "" })
+              fetchSifs()
+            }}
+          >
+            Crear SIF
+          </Button>
         </div>
-      ))}
+      </Card>
 
-      {/* NUEVO SIF */}
-      <h3>Nuevo SIF</h3>
-
-      <input
-        placeholder="Alias"
-        value={nuevoSif.alias}
-        onChange={e => setNuevoSif({ ...nuevoSif, alias: e.target.value })}
-      />
-
-      <input
-        placeholder="Software"
-        value={nuevoSif.software_nombre}
-        onChange={e => setNuevoSif({ ...nuevoSif, software_nombre: e.target.value })}
-      />
-
-      <input
-        placeholder="Versión"
-        value={nuevoSif.version}
-        onChange={e => setNuevoSif({ ...nuevoSif, version: e.target.value })}
-      />
-
-      <input
-        placeholder="NIF"
-        value={nuevoSif.nif}
-        onChange={e => setNuevoSif({ ...nuevoSif, nif: e.target.value })}
-      />
-
-      <button
-        onClick={async () => {
-          await createSif(nuevoSif)
-          setNuevoSif({ alias: "", software_nombre: "", version: "", nif: "" })
-          fetchSifs()
-        }}
-      >
-        Crear SIF
-      </button>
-          </div>
-        )
+    </div>
+  )
 }
