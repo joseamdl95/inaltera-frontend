@@ -58,7 +58,7 @@ export default function Layout() {
             <div
               onClick={() => {
                 if (collapsed) {
-                  navigate("/facturacion/emitir") // 👈 directo
+                  navigate("/facturacion/emitir")
                 } else {
                   setOpenMenus({
                     ...openMenus,
@@ -66,10 +66,10 @@ export default function Layout() {
                   })
                 }
               }}
-              className={linkClass}
+              className={menuButtonClass}
             >
               <span>📄</span>
-              {!collapsed && <span className={linkClass}>Facturación</span>}
+              {!collapsed && <span className="flex-1">Facturación</span>}
               {!collapsed && <span>{openMenus.facturacion ? "▲" : "▼"}</span>}
             </div>
 
@@ -95,7 +95,7 @@ export default function Layout() {
             <div
               onClick={() => {
                 if (collapsed) {
-                  navigate("/perfil/usuario") // 👈 directo
+                  navigate("/perfil/usuario")
                 } else {
                   setOpenMenus({
                     ...openMenus,
@@ -103,10 +103,10 @@ export default function Layout() {
                   })
                 }
               }}
-              className={linkClass}
+              className={menuButtonClass}
             >
               <span>👤</span>
-              {!collapsed && <span className={linkClass}>Perfil</span>}
+              {!collapsed && <span className="flex-1">Perfil</span>}
               {!collapsed && <span>{openMenus.perfil ? "▲" : "▼"}</span>}
             </div>
 
