@@ -182,13 +182,13 @@ export default function Layout() {
       {/* 🔷 CONTENIDO */}
       <div className="flex-1 flex flex-col">
 
+        <Header />
+
         {/* 🔹 MAIN */}
         <main className="flex-1 p-6 overflow-auto">
 
-          <Header />
-
           <Outlet />
-          
+
         </main>
 
       </div>
