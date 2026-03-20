@@ -26,10 +26,6 @@ export default function Facturacion() {
         <NavLink to="pdf" className={linkClass}>
           Cargar PDF
         </NavLink>
-
-        <NavLink to="verificador" className={linkClass}>
-          Verificador
-        </NavLink>
       </div>
 
       {/* 📄 CONTENIDO */}
