@@ -2,6 +2,10 @@ import { useEffect, useState } from "react"
 import { getMe, updateDatos, updateEmail, updatePassword, enable2FA, verify2FA, disable2FA } from "../../api/user"
 import { getBillingStatus, changePlan } from "../../api/billing"
 
+import Card from "../../components/common/Card"
+import Input from "../../components/common/Input"
+import Button from "../../components/common/Button"
+
 export default function Usuario() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -140,171 +144,220 @@ export default function Usuario() {
   }
 
   return (
-    <div style={{ maxWidth: 500, padding: '20px' }}>
-      <h1>Mi perfil</h1>
+    <div className="max-w-5xl mx-auto space-y-6">
 
-      <h3>Datos Personales</h3>
+      <h1 className="text-2xl font-bold">Mi perfil</h1>
 
-      <form onSubmit={handleUpdateDatos}>
-        <div>
-          <label>Nombre</label><br />
-          <input
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
-        </div>
+      {/* 👤 DATOS PERSONALES */}
+      <Card>
+        <h3 className="font-semibold mb-4">Datos Personales</h3>
+      
+        <form onSubmit={handleUpdateDatos} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label>Nombre</label><br />
+              <Input
+                type="text"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                required
+              />
+            </div>
 
-        <div>
-          <label>Apellidos</label><br />
-          <input
-            type="text"
-            value={apellidos}
-            onChange={(e) => setApellidos(e.target.value)}
-            required
-          />
-        </div>
+            <div>
+              <label>Apellidos</label><br />
+              <Input
+                type="text"
+                value={apellidos}
+                onChange={(e) => setApellidos(e.target.value)}
+                required
+              />
+            </div>
 
-        <div>
-          <label>Teléfono (opcional)</label><br />
-          <input
-            type="text"
-            value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
-          />
-        </div> 
+            <div>
+              <label>Teléfono (opcional)</label><br />
+              <Input
+                type="text"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+              />
+            </div> 
+          </div>
+          
+          <Button type="submit">Guardar datos</Button>
+        </form>
+      </Card>
 
-        <button type="submit">Guardar datos</button>
-      </form>
+      <h2>Datos de acceso</h2>
 
-      <h3>Datos de acceso</h3>
+      {/* 🔐 EMAIL */}
+      <Card>
+        <h3 className="font-semibold mb-4">Email</h3>
 
-      <form onSubmit={handleUpdateEmail}>
-        <div>
-          <label>Email</label><br />
-          <input
+        <form onSubmit={handleUpdateEmail} className="space-y-4">
+          <Input
             type="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-        </div>
 
-        <button type="submit">Guardar email</button>
-      </form>
+          <Button type="submit">
+            Guardar email
+          </Button>
+        </form>
+      </Card>
 
-      <hr />
-      <h3>Cambiar contraseña</h3>
+      {/* 🔑 PASSWORD */}
+      <Card>
+        <h3 className="font-semibold mb-4">Cambiar contraseña</h3>
 
-      <form onSubmit={handleChangePassword}>
-        <div>
-          <input
+        <form onSubmit={handleChangePassword} className="space-y-4">
+
+          <Input
             type="password"
             placeholder="Contraseña actual"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
           />
-        </div>
 
-        <div>
-          <input
+          <Input
             type="password"
             placeholder="Nueva contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-        </div>
 
-        <div>
-          <input
+          <Input
             type="password"
             placeholder="Repetir contraseña"
             value={password2}
             onChange={(e) => setPassword2(e.target.value)}
           />
-        </div>
 
-        <button type="submit">Cambiar contraseña</button>
-      </form>
+          <Button type="submit">
+            Cambiar contraseña
+          </Button>
 
-      <hr />
+        </form>
+      </Card>
 
-      <h3>Seguridad (Autenticación en dos pasos)</h3>
+      {/* 🛡️ 2FA */}
+      <Card>
+        <h3 className="font-semibold mb-4">
+          Seguridad (2FA)
+        </h3>
+        
+        {!twoFA && !twoFAPending && (
+          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+            <p className="text-sm text-gray-700 mb-3">
+              Protege tu cuenta con una aplicación de autenticación (Google Authenticator, Authy, etc).
+            </p>
 
-      {!twoFA && !twoFAPending && (
-        <div style={{ backgroundColor: '#f0f7ff', padding: '15px', borderRadius: '8px' }}>
-          <p>Protege tu cuenta con una aplicación de autenticación (Google Authenticator, Authy, etc).</p>
-          <button onClick={handleEnable2FA} style={{ backgroundColor: '#007bff', color: 'white' }}>
-            Configurar Authenticator
-          </button>
-        </div>
-      )}
+            <Button onClick={handleEnable2FA}>
+              Configurar Authenticator
+            </Button>
+          </div>
+        )}
 
-      {twoFAPending && (
-        <div style={{ textAlign: 'center', padding: '20px', border: '1px solid #ddd' }}>
-          <h4>Escanea este código QR</h4>
-          {qrCode && <img src={qrCode} alt="QR Code" style={{ margin: '15px 0' }} />}
-          <p>Luego, introduce el código de 6 dígitos:</p>
-          <form onSubmit={(e) => {
-            e.preventDefault()
-            handleVerify2FA()
-          }}>
-            <input
-              value={twoFACode}
-              placeholder="000000"
-              onChange={(e) => setTwoFACode(e.target.value)}
-              style={{ fontSize: '20px', textAlign: 'center', width: '150px' }}
-            />
-            <br /><br />
-            <button type="submit" style={{ marginRight: '10px' }}>Verificar y activar</button>
-            <button onClick={() => setTwoFAPending(false)} style={{ backgroundColor: '#ccc' }}>Cancelar</button>
-          </form>
-        </div>
-      )}
+        {twoFAPending && (
+          <div className="text-center space-y-4">
+            <h4 className="font-medium">
+              Escanea el código QR
+            </h4>
+            {qrCode && (
+              <img
+                src={qrCode}
+                className="mx-auto"
+              />
+            )}
+            <p>Luego, introduce el código de 6 dígitos:</p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                handleVerify2FA()
+              }}
+              className="space-y-3"
+            >
+              <Input
+                value={twoFACode}
+                placeholder="000000"
+                onChange={(e) => setTwoFACode(e.target.value)}
+                className="text-center tracking-widest text-lg"
+              />
+              
+              <div className="flex gap-2 justify-center">
+                <Button type="submit">
+                  Verificar
+                </Button>
 
-      {twoFA && (
-        <div style={{ backgroundColor: '#e6fffa', padding: '15px', borderRadius: '8px' }}>
-          <p>✅ <strong>2FA está activo.</strong> Tu cuenta está protegida.</p>
-          <button onClick={handleDisable2FA} style={{ backgroundColor: '#e53e3e', color: 'white' }}>
-            Desactivar protección
-          </button>
-        </div>
-      )}
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setTwoFAPending(false)}
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </form>
+          </div>
+        )}
 
-      <hr />
-      <h3>Plan y tarifas</h3>
+        {twoFA && (
+          <div className="bg-green-50 border border-green-200 p-4 rounded-lg flex justify-between items-center">
+            <span className="text-sm">
+              ✅ 2FA activo
+            </span>
 
-      {billing && (
-        <div style={{ marginBottom: 15 }}>
-          <p><strong>Plan actual:</strong> {billing.plan}</p>
-          <p><strong>Uso:</strong> {billing.usadas} / {billing.limite}</p>
-          <p><strong>Estado:</strong> {billing.estado}</p>
-        </div>
-      )}
-      <h4>Cambiar plan</h4>
+            <Button
+              variant="danger"
+              onClick={handleDisable2FA}
+            >
+              Desactivar
+            </Button>
+          </div>
+        )}
+      </Card>
+      
+      {/* 💳 PLAN */}
+      <Card>
+        <h3 className="font-semibold mb-4">Plan y tarifas</h3>
 
-      <select
-        value={billing?.plan || "FREE"}
-        onChange={async (e) => {
-          const nuevoPlan = e.target.value
+        {billing && (
+          <div className="text-sm space-y-1 mb-4">
+            <p><strong>Plan actual:</strong> {billing.plan}</p>
+            <p><strong>Uso:</strong> {billing.usadas} / {billing.limite}</p>
+            <p><strong>Estado:</strong> {billing.estado}</p>
+          </div>
+        )}
 
-          try {
-            await changePlan(nuevoPlan)
+        <h4 className="font-medium">Cambiar plan</h4>
 
-            const updated = await getBillingStatus()
-            setBilling(updated)
+        <select
+          className="border rounded-lg px-3 py-2 w-full"
+          value={billing?.plan || "FREE"}
+          onChange={async (e) => {
+            const nuevoPlan = e.target.value
 
-            alert(`Plan cambiado a ${nuevoPlan}`)
-          } catch (err) {
-            console.error(err)
-            alert("Error cambiando plan")
-          }
-        }}
-      >
-        <option value="FREE">Free (5 facturas)</option>
-        <option value="BASIC">Basic (10 facturas - 9€)</option>
-        <option value="PRO">Pro (20 facturas - 15€)</option>
-      </select>
+            try {
+              await changePlan(nuevoPlan)
+
+              const updated = await getBillingStatus()
+              setBilling(updated)
+
+              alert(`Plan cambiado a ${nuevoPlan}`)
+            } catch (err) {
+              console.error(err)
+              alert("Error cambiando plan")
+            }
+          }}
+        >
+          <option value="FREE">Free (5 facturas)</option>
+          <option value="BASIC">Basic (10 facturas - 9€)</option>
+          <option value="PRO">Pro (20 facturas - 15€)</option>
+        </select>
+      </Card>
+
     </div>
   )
 }
