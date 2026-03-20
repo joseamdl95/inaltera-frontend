@@ -11,8 +11,11 @@ export default function Layout() {
   const [openMenus, setOpenMenus] = useState({facturacion: true, perfil: false})
 
   const linkClass = ({ isActive }) =>
-    `block px-4 py-2 rounded-lg transition ${
-      isActive ? "bg-gray-200 font-semibold" : "hover:bg-gray-100"
+    `px-4 py-2 rounded-lg text-sm font-medium transition
+    ${
+      isActive
+        ? "bg-blue-100 text-blue-700"
+        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
     }`
 
   return (
