@@ -30,19 +30,27 @@ export default function Layout() {
         </div>
 
         <nav className="flex flex-col gap-1 px-2">
-          
-          {/* Dashboard */}
+
+          {/* DASHBOARD */}
           <NavLink to="/dashboard" className={linkClass}>
             <span>🏠</span>
             {!collapsed && <span>Dashboard</span>}
           </NavLink>
 
+          {/* VERIFICADOR */}
+          <NavLink to="/verificador" className={linkClass}>
+            <span>🔍</span>
+            {!collapsed && <span>Verificador</span>}
+          </NavLink>
+
+          {/* REGISTRO */}
+          <NavLink to="/registro" className={linkClass}>
+            <span>📊</span>
+            {!collapsed && <span>Registro</span>}
+          </NavLink>
+
           {/* FACTURACIÓN */}
           <div>
-            {!collapsed && (
-              <p className="text-xs text-gray-400 px-2 mt-4">FACTURACIÓN</p>
-            )}
-
             <div
               onClick={() =>
                 setOpenMenus({
@@ -57,7 +65,6 @@ export default function Layout() {
               {!collapsed && <span>{openMenus.facturacion ? "▲" : "▼"}</span>}
             </div>
 
-            {/* SUBMENU */}
             {openMenus.facturacion && !collapsed && (
               <div className="ml-6 flex flex-col">
                 <NavLink to="/facturacion/emitir" className={linkClass}>
@@ -70,24 +77,13 @@ export default function Layout() {
             )}
           </div>
 
-          {/* Verificador */}
-          <NavLink to="/verificador" className={linkClass}>
-            <span>🔍</span>
-            {!collapsed && <span>Verificador</span>}
-          </NavLink>
+        </nav>
 
-          {/* Registro */}
-          <NavLink to="/registro" className={linkClass}>
-            <span>📊</span>
-            {!collapsed && <span>Registro</span>}
-          </NavLink>
+        {/*Abajo */}
+        <div className="mt-auto flex flex-col gap-1 px-2">
 
           {/* PERFIL */}
           <div>
-            {!collapsed && (
-              <p className="text-xs text-gray-400 px-2 mt-4">PERFIL</p>
-            )}
-
             <div
               onClick={() =>
                 setOpenMenus({
@@ -117,28 +113,20 @@ export default function Layout() {
             )}
           </div>
 
-        </nav>
-
-        {/* Logout abajo */}
-        <div className="mt-auto p-2">
+          {/* LOGOUT */}
           <button
             onClick={logout}
-            className="w-full mt-4 bg-red-500 text-white py-2 rounded-lg"
+            className="w-full bg-red-500 text-white py-2 rounded-lg"
           >
             {!collapsed ? "Salir" : "🚪"}
           </button>
+
         </div>
+        
       </aside>
 
       {/* 🔷 CONTENIDO */}
       <div className="flex-1 flex flex-col">
-
-        {/* 🔹 TOPBAR */}
-        <header className="h-14 bg-white border-b px-6 flex items-center">
-          <h1 className="text-lg font-semibold">
-            {location.pathname.split("/").filter(Boolean).join(" / ") || "Dashboard"}
-          </h1>
-        </header>
 
         {/* 🔹 MAIN */}
         <main className="flex-1 p-6 overflow-auto">
