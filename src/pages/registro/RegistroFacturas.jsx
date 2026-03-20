@@ -215,7 +215,7 @@ export default function RegistroFacturas() {
         
         {/* 🔎 FILTROS */}
         <div className="space-y-4">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-3 mb-4">
 
             {/* 🔎 BUSCAR (2/3) */}
             <div className="col-span-2">
