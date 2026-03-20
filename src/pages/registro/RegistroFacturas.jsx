@@ -210,31 +210,38 @@ export default function RegistroFacturas() {
 
       </div>
 
-      {/* 🔎 FILTROS */}
-      <Card>
-        <div className="flex gap-3 flex-wrap">
-          <Input
-            placeholder="Buscar"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-
-          <Input
-            type="date"
-            value={desde}
-            onChange={(e) => setDesde(e.target.value)}
-          />
-
-          <Input
-            type="date"
-            value={hasta}
-            onChange={(e) => setHasta(e.target.value)}
-          />
-        </div>
-      </Card>
-
       {/* 📋 TABLA */}
       <Card>
+        
+        {/* 🔎 FILTROS */}
+        <div className="grid grid-cols-3 gap-3">
+
+          {/* 🔎 BUSCAR (2/3) */}
+          <div className="col-span-2">
+            <Input
+              placeholder="Buscar"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          {/* 📅 FECHAS (1/3 dividido en 2) */}
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              type="date"
+              value={desde}
+              onChange={(e) => setDesde(e.target.value)}
+            />
+
+            <Input
+              type="date"
+              value={hasta}
+              onChange={(e) => setHasta(e.target.value)}
+            />
+          </div>
+
+        </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
 
