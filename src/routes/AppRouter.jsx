@@ -9,7 +9,7 @@ import ResetPassword from "../pages/auth/ResetPassword"
 
 import Dashboard from "../pages/Dashboard"
 
-import EmitirFactura from "../pages/facturacion/Facturacion"
+import Facturacion from "../pages/facturacion/Facturacion"
 import EmitirFactura from "../pages/facturacion/EmitirFactura"
 import DetalleFactura from "../pages/facturacion/DetalleFactura"
 import CargarPDF from "../pages/facturacion/CargarPDF"
