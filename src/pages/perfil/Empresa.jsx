@@ -82,6 +82,17 @@ export default function Empresa() {
     setSifs(res.data)
   }
 
+  const [showUploader, setShowUploader] = useState(false)
+  const [dragging, setDragging] = useState(false)
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setDragging(false)
+
+    const file = e.dataTransfer.files[0]
+    if (file) handleLogoUpload(file)
+  }
+
   async function handleLogoUpload(file) {
     if (!file) return
 
@@ -153,31 +164,73 @@ export default function Empresa() {
       
       {/* 🖼 LOGO */}
       <Card>
-        <h3 className="font-semibold mb-4">Logo empresa</h3>
 
-        <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition">
+        <div className="flex flex-col items-center gap-4">
 
-          <span className="text-sm text-gray-600">
-            Haz clic para subir logo
-          </span>
+          <h3 className="font-semibold">Logo de empresa</h3>
 
-          <input
-            type="file"
-            accept="image/png, image/jpeg"
-            onChange={(e) => handleLogoUpload(e.target.files[0])}
-            className="hidden"
-          />
-        </label>
+          {/* 🖼 PREVIEW */}
+          {logoUrl && !showUploader && (
+            <>
+              <div className="bg-white border rounded-xl p-4 shadow-sm">
+                <img
+                  src={logoUrl + "?t=" + Date.now()}
+                  className="h-32 object-contain"
+                />
+              </div>
 
-        {/* PREVIEW */}
-        {logoUrl && (
-          <div className="mt-4 flex justify-center">
-            <img
-              src={logoUrl + "?t=" + Date.now()}
-              className="h-20 object-contain"
-            />
-          </div>
-        )}
+              <Button
+                variant="secondary"
+                onClick={() => setShowUploader(true)}
+              >
+                Cambiar logo
+              </Button>
+            </>
+          )}
+
+          {/* 📂 UPLOADER */}
+          {(!logoUrl || showUploader) && (
+            <label
+              onDragEnter={() => setDragging(true)}
+              onDragLeave={() => setDragging(false)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleDrop}
+              className={`w-full max-w-md flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-xl cursor-pointer transition
+              ${
+                dragging
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-300 hover:border-blue-500 hover:bg-blue-50"
+              }`}
+            >
+              <span className="text-sm text-gray-600 text-center">
+                Haz clic o arrastra tu logo aquí
+              </span>
+
+              <span className="text-xs text-gray-400 mt-1">
+                PNG o JPG recomendado
+              </span>
+
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={(e) => handleLogoUpload(e.target.files[0])}
+                className="hidden"
+              />
+            </label>
+          )}
+
+          {/* 🔙 CANCELAR */}
+          {showUploader && logoUrl && (
+            <Button
+              variant="secondary"
+              onClick={() => setShowUploader(false)}
+            >
+              Cancelar
+            </Button>
+          )}
+
+        </div>
+
       </Card>
 
       {/* 🏢 EMPRESA */}
