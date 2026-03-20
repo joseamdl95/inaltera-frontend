@@ -32,10 +32,15 @@ export default function Layout() {
         bg-white border-r shadow-sm flex flex-col transition-all
         ${collapsed ? "w-16" : "w-64"}
       `}>
-        <div className="flex flex-col gap-3 p-4 border-b">
+        <div
+          className={`
+            p-4 border-b flex items-center
+            ${collapsed ? "justify-center" : "justify-between"}
+          `}
+        >
 
           {!collapsed && (
-            <h2 className="text-lg font-semibold text-gray-800">
+            <h2 className="text-lg font-semibold text-gray-800 tracking-tight">
               InAltera
             </h2>
           )}
@@ -43,7 +48,7 @@ export default function Layout() {
           <button
             onClick={() => setCollapsed(!collapsed)}
             className={`
-              p-2 rounded-lg 
+              p-1.5 rounded-lg 
               bg-gray-100 text-gray-600 
               hover:bg-gray-200 
               transition
