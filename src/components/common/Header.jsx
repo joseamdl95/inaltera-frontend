@@ -2,11 +2,11 @@ export default function Header() {
     
     return (
         <div className="
-            h-16 
+            h-20 
             bg-white 
             border-b 
             flex items-center 
-            px-6 
+            px-10 
             shadow-sm
         ">
 
@@ -14,7 +14,7 @@ export default function Header() {
         <img
             src={import.meta.env.VITE_LOGO_URL}
             alt="InAltera"
-            className="h-12 object-contain"
+            className="h-14 object-contain"
         />
 
         </div>

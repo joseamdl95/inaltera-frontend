@@ -26,172 +26,171 @@ export default function Layout() {
     }`
 
   return (
-    <div className="flex h-screen bg-background">
-      
-      {/* 🔷 SIDEBAR */}
-      <aside className={`
-        bg-white border-r shadow-sm flex flex-col transition-all
-        ${collapsed ? "w-16" : "w-64"}
-      `}>
-        <div
-          className={`
-            p-4 border-b flex items-center
-            ${collapsed ? "justify-center" : "justify-between"}
-          `}
-        >
+    <div className="h-screen flex flex-col bg-background">
 
-          {!collapsed && (
-            <h2 className="text-lg font-semibold text-gray-800 tracking-tight">
-              InAltera
-            </h2>
-          )}
+      <Header />
 
-          <button
-            onClick={() => setCollapsed(!collapsed)}
+      <div className="flex flex-1">
+        
+        {/* 🔷 SIDEBAR */}
+        <aside className={`
+          bg-white border-r shadow-sm flex flex-col transition-all
+          ${collapsed ? "w-16" : "w-64"}
+        `}>
+          <div
             className={`
-              p-1.5 rounded-lg 
-              bg-gray-100 text-gray-600 
-              hover:bg-gray-200 
-              transition
-              ${collapsed ? "mx-auto" : "w-fit"}
+              p-4 border-b flex items-center
+              ${collapsed ? "justify-center" : "justify-between"}
             `}
           >
-            {collapsed ? "➡️" : "⬅️"}
-          </button>
 
-        </div>
+            {!collapsed && (
+              <h2 className="text-lg font-semibold text-gray-800 tracking-tight">
+                InAltera
+              </h2>
+            )}
 
-        <nav className="flex flex-col gap-1 px-2">
-
-          {/* DASHBOARD */}
-          <NavLink to="/dashboard" className={linkClass}>
-            <span>🏠</span>
-            {!collapsed && <span>Dashboard</span>}
-          </NavLink>
-
-          {/* VERIFICADOR */}
-          <NavLink to="/verificador" className={linkClass}>
-            <span>🔍</span>
-            {!collapsed && <span>Verificador</span>}
-          </NavLink>
-
-          {/* REGISTRO */}
-          <NavLink to="/registro" className={linkClass}>
-            <span>📊</span>
-            {!collapsed && <span>Registro</span>}
-          </NavLink>
-
-          {/* FACTURACIÓN */}
-          <div>
-            <div
-              onClick={() => {
-                if (collapsed) {
-                  navigate("/facturacion/emitir")
-                } else {
-                  setOpenMenus({
-                    ...openMenus,
-                    facturacion: !openMenus.facturacion
-                  })
-                }
-              }}
+            <button
+              onClick={() => setCollapsed(!collapsed)}
               className={`
-                flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer
-                ${
-                  isFacturacionActive
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }
+                p-1.5 rounded-lg 
+                bg-gray-100 text-gray-600 
+                hover:bg-gray-200 
+                transition
+                ${collapsed ? "mx-auto" : "w-fit"}
               `}
             >
-              <span>📄</span>
-              {!collapsed && <span className="flex-1">Facturación</span>}
-              {!collapsed && <span>{openMenus.facturacion ? "▲" : "▼"}</span>}
-            </div>
+              {collapsed ? "➡️" : "⬅️"}
+            </button>
 
-            {openMenus.facturacion && !collapsed && (
-              <div className="ml-6 flex flex-col">
-                <NavLink to="/facturacion/emitir" className={linkClass}>
-                  Emitir factura
-                </NavLink>
-                <NavLink to="/facturacion/pdf" className={linkClass}>
-                  Desde PDF
-                </NavLink>
-              </div>
-            )}
           </div>
 
-        </nav>
+          <nav className="flex flex-col gap-1 px-2">
 
-        {/*Abajo */}
-        <div className="mt-auto flex flex-col gap-1 px-2">
+            {/* DASHBOARD */}
+            <NavLink to="/dashboard" className={linkClass}>
+              <span>🏠</span>
+              {!collapsed && <span>Dashboard</span>}
+            </NavLink>
 
-          {/* PERFIL */}
-          <div>
-            <div
-              onClick={() => {
-                if (collapsed) {
-                  navigate("/perfil/usuario")
-                } else {
-                  setOpenMenus({
-                    ...openMenus,
-                    perfil: !openMenus.perfil
-                  })
-                }
-              }}
-              className={`
-                flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer
-                ${
-                  isPerfilActive
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }
-              `}
+            {/* VERIFICADOR */}
+            <NavLink to="/verificador" className={linkClass}>
+              <span>🔍</span>
+              {!collapsed && <span>Verificador</span>}
+            </NavLink>
+
+            {/* REGISTRO */}
+            <NavLink to="/registro" className={linkClass}>
+              <span>📊</span>
+              {!collapsed && <span>Registro</span>}
+            </NavLink>
+
+            {/* FACTURACIÓN */}
+            <div>
+              <div
+                onClick={() => {
+                  if (collapsed) {
+                    navigate("/facturacion/emitir")
+                  } else {
+                    setOpenMenus({
+                      ...openMenus,
+                      facturacion: !openMenus.facturacion
+                    })
+                  }
+                }}
+                className={`
+                  flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer
+                  ${
+                    isFacturacionActive
+                      ? "bg-blue-100 text-blue-700"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }
+                `}
+              >
+                <span>📄</span>
+                {!collapsed && <span className="flex-1">Facturación</span>}
+                {!collapsed && <span>{openMenus.facturacion ? "▲" : "▼"}</span>}
+              </div>
+
+              {openMenus.facturacion && !collapsed && (
+                <div className="ml-6 flex flex-col">
+                  <NavLink to="/facturacion/emitir" className={linkClass}>
+                    Emitir factura
+                  </NavLink>
+                  <NavLink to="/facturacion/pdf" className={linkClass}>
+                    Desde PDF
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+          </nav>
+
+          {/*Abajo */}
+          <div className="mt-auto flex flex-col gap-1 px-2">
+
+            {/* PERFIL */}
+            <div>
+              <div
+                onClick={() => {
+                  if (collapsed) {
+                    navigate("/perfil/usuario")
+                  } else {
+                    setOpenMenus({
+                      ...openMenus,
+                      perfil: !openMenus.perfil
+                    })
+                  }
+                }}
+                className={`
+                  flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer
+                  ${
+                    isPerfilActive
+                      ? "bg-blue-100 text-blue-700"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }
+                `}
+              >
+                <span>👤</span>
+                {!collapsed && <span className="flex-1">Perfil</span>}
+                {!collapsed && <span>{openMenus.perfil ? "▲" : "▼"}</span>}
+              </div>
+
+              {openMenus.perfil && !collapsed && (
+                <div className="ml-6 flex flex-col">
+                  <NavLink to="/perfil/usuario" className={linkClass}>
+                    Usuario
+                  </NavLink>
+                  <NavLink to="/perfil/empresa" className={linkClass}>
+                    Empresa
+                  </NavLink>
+                  <NavLink to="/perfil/clientes" className={linkClass}>
+                    Clientes
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+            {/* LOGOUT */}
+            <button
+              onClick={logout}
+              className="w-full bg-red-500 text-white py-2 rounded-lg"
             >
-              <span>👤</span>
-              {!collapsed && <span className="flex-1">Perfil</span>}
-              {!collapsed && <span>{openMenus.perfil ? "▲" : "▼"}</span>}
-            </div>
+              {!collapsed ? "Salir" : "🚪"}
+            </button>
 
-            {openMenus.perfil && !collapsed && (
-              <div className="ml-6 flex flex-col">
-                <NavLink to="/perfil/usuario" className={linkClass}>
-                  Usuario
-                </NavLink>
-                <NavLink to="/perfil/empresa" className={linkClass}>
-                  Empresa
-                </NavLink>
-                <NavLink to="/perfil/clientes" className={linkClass}>
-                  Clientes
-                </NavLink>
-              </div>
-            )}
           </div>
-
-          {/* LOGOUT */}
-          <button
-            onClick={logout}
-            className="w-full bg-red-500 text-white py-2 rounded-lg"
-          >
-            {!collapsed ? "Salir" : "🚪"}
-          </button>
-
-        </div>
+          
+        </aside>
         
-      </aside>
-
-      {/* 🔷 CONTENIDO */}
-      <div className="flex-1 flex flex-col">
-
-        <Header />
 
         {/* 🔹 MAIN */}
         <main className="flex-1 p-6 overflow-auto">
-
           <Outlet />
-
         </main>
-
+               
       </div>
+      
     </div>
   )
 }
