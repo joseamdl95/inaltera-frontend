@@ -112,7 +112,7 @@ export default function Layout() {
                 }
               }}
               className={`${menuButtonClass} ${
-                isFacturacionActive ? "bg-blue-100 text-blue-700" : ""
+                isPerfilActive ? "bg-blue-100 text-blue-700" : ""
               }`}
             >
               <span>👤</span>
