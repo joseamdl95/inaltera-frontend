@@ -69,7 +69,7 @@ export default function Layout() {
               className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded"
             >
               <span>📄</span>
-              {!collapsed && <span className="flex-1">Facturación</span>}
+              {!collapsed && <span className={linkClass}>Facturación</span>}
               {!collapsed && <span>{openMenus.facturacion ? "▲" : "▼"}</span>}
             </div>
 
@@ -106,7 +106,7 @@ export default function Layout() {
               className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded"
             >
               <span>👤</span>
-              {!collapsed && <span className="flex-1">Perfil</span>}
+              {!collapsed && <span className={linkClass}>Perfil</span>}
               {!collapsed && <span>{openMenus.perfil ? "▲" : "▼"}</span>}
             </div>
 
