@@ -207,17 +207,17 @@ export default function Empresa() {
             />
           </div>
 
-          <div>
-            <label>Calle</label><br />
-            <Input 
-              value={calle} 
-              onChange={e => setCalle(e.target.value)} 
-              placeholder="Calle Mayor 12 3ºA"
-              required
-            />
-          </div>
-
           <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label>Calle</label><br />
+              <Input 
+                value={calle} 
+                onChange={e => setCalle(e.target.value)} 
+                placeholder="Calle Mayor 12 3ºA"
+                required
+              />
+            </div>
+
             <div>
               <label>C.P.</label><br />
               <Input 
