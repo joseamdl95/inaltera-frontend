@@ -6,6 +6,10 @@ export default function Layout() {
   const { logout } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
+  const menuButtonClass = `
+  flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition
+  bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer
+  `
 
   const [collapsed, setCollapsed] = useState(false)
   const [openMenus, setOpenMenus] = useState({facturacion: true, perfil: false})
