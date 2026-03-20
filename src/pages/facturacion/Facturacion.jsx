@@ -1,27 +1,42 @@
 import { NavLink, Outlet } from "react-router-dom"
 
 export default function Facturacion() {
-  const linkStyle = ({ isActive }) => ({
-    padding: "8px 12px",
-    borderRadius: "6px",
-    textDecoration: "none",
-    backgroundColor: isActive ? "#e5e7eb" : "transparent",
-    color: "black"
-  })
+   const linkClass = ({ isActive }) =>
+    `px-4 py-2 rounded-lg text-sm font-medium transition
+    ${
+      isActive
+        ? "bg-blue-100 text-blue-700"
+        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+    }`
 
   return (
-    <div>
-      <h1>Facturación</h1>
+    <div className="space-y-6">
 
-      <nav style={{ display: "flex", gap: "10px" }}>
-        <NavLink to="emitir" style={linkStyle}>Emitir</NavLink>
-        <NavLink to="pdf" style={linkStyle}>Cargar PDF</NavLink>
-        <NavLink to="verificador" style={linkStyle}>Verificador</NavLink>
-      </nav>
+      {/* 🧠 HEADER */}
+      <div>
+        <h1 className="text-3xl font-bold">Facturación</h1>
+      </div>
 
-      <div style={{ marginTop: "20px" }}>
+      {/* 🔥 NAV TABS */}
+      <div className="bg-white border rounded-xl p-2 flex gap-2 w-fit shadow-sm">
+        <NavLink to="emitir" className={linkClass}>
+          Emitir
+        </NavLink>
+
+        <NavLink to="pdf" className={linkClass}>
+          Cargar PDF
+        </NavLink>
+
+        <NavLink to="verificador" className={linkClass}>
+          Verificador
+        </NavLink>
+      </div>
+
+      {/* 📄 CONTENIDO */}
+      <div>
         <Outlet />
       </div>
+
     </div>
   )
 }
