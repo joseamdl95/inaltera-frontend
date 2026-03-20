@@ -28,11 +28,15 @@ export default function Layout() {
     <div className="flex h-screen bg-background">
       
       {/* 🔷 SIDEBAR */}
-      <aside className={`bg-white border-r shadow-sm flex flex-col transition-all
-        ${collapsed ? "w-16" : "w-64"}
+      <aside className={`p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition
+        ${collapsed ? "mx-auto" : ""}
       `}>
         <div className="flex flex-col gap-3 p-4 border-b">
-          {!collapsed && <h2 className="text-xl font-bold">InAltera</h2>}
+          {!collapsed && (
+            <h2 className="text-lg font-semibold text-gray-800">
+              InAltera
+            </h2>
+          )}
 
           <button
             onClick={() => setCollapsed(!collapsed)}
