@@ -1,10 +1,11 @@
-import { NavLink, Outlet, useLocation } from "react-router-dom"
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { useAuth } from "../../context/AuthContext"
 
 export default function Layout() {
   const { logout } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
 
   const [collapsed, setCollapsed] = useState(false)
   const [openMenus, setOpenMenus] = useState({facturacion: true, perfil: false})
@@ -52,12 +53,16 @@ export default function Layout() {
           {/* FACTURACIÓN */}
           <div>
             <div
-              onClick={() =>
-                setOpenMenus({
-                  ...openMenus,
-                  facturacion: !openMenus.facturacion
-                })
-              }
+              onClick={() => {
+                if (collapsed) {
+                  navigate("/facturacion/emitir") // 👈 directo
+                } else {
+                  setOpenMenus({
+                    ...openMenus,
+                    facturacion: !openMenus.facturacion
+                  })
+                }
+              }}
               className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded"
             >
               <span>📄</span>
@@ -85,12 +90,16 @@ export default function Layout() {
           {/* PERFIL */}
           <div>
             <div
-              onClick={() =>
-                setOpenMenus({
-                  ...openMenus,
-                  perfil: !openMenus.perfil
-                })
-              }
+              onClick={() => {
+                if (collapsed) {
+                  navigate("/perfil/usuario") // 👈 directo
+                } else {
+                  setOpenMenus({
+                    ...openMenus,
+                    perfil: !openMenus.perfil
+                  })
+                }
+              }}
               className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded"
             >
               <span>👤</span>
