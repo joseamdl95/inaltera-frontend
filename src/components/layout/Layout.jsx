@@ -72,9 +72,14 @@ export default function Layout() {
                   })
                 }
               }}
-              className={`${menuButtonClass} ${
-                isFacturacionActive ? "bg-blue-100 text-blue-700" : ""
-              }`}
+              className={`
+                flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer
+                ${
+                  isFacturacionActive
+                    ? "bg-blue-100 text-blue-700"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }
+              `}
             >
               <span>📄</span>
               {!collapsed && <span className="flex-1">Facturación</span>}
@@ -111,9 +116,14 @@ export default function Layout() {
                   })
                 }
               }}
-              className={`${menuButtonClass} ${
-                isPerfilActive ? "bg-blue-100 text-blue-700" : ""
-              }`}
+              className={`
+                flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer
+                ${
+                  isPerfilActive
+                    ? "bg-blue-100 text-blue-700"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }
+              `}
             >
               <span>👤</span>
               {!collapsed && <span className="flex-1">Perfil</span>}
