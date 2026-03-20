@@ -66,7 +66,7 @@ export default function Layout() {
                   })
                 }
               }}
-              className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded"
+              className={linkClass}
             >
               <span>📄</span>
               {!collapsed && <span className={linkClass}>Facturación</span>}
@@ -103,7 +103,7 @@ export default function Layout() {
                   })
                 }
               }}
-              className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded"
+              className={linkClass}
             >
               <span>👤</span>
               {!collapsed && <span className={linkClass}>Perfil</span>}
