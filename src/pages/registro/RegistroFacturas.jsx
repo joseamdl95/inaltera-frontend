@@ -175,33 +175,40 @@ export default function RegistroFacturas() {
 
       <h1 className="text-2xl font-bold">Registro de facturas</h1>
 
-      {/* 📊 ALERTAS INTEGRIDAD */}
-      {logsIntegrity !== null && (
-        <div className={`p-3 rounded-lg text-sm font-medium
-          ${logsIntegrity ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}
-        `}>
-          {logsIntegrity
-            ? "✔ Integridad de registros verificada"
-            : "⚠ Integridad de logs comprometida"}
-        </div>
-      )}
+      <div className="flex flex-wrap items-center gap-3">
 
-      {facturasIntegrity !== null && (
-        <div className={`p-3 rounded-lg text-sm font-medium
-          ${facturasIntegrity ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}
-        `}>
-          {facturasIntegrity
-            ? "✔ Integridad de cadena de facturas verificada"
-            : "⚠ Integridad comprometida"}
-        </div>
-      )}
+        {/* 🟢 LOGS */}
+        {logsIntegrity !== null && (
+          <div className={`
+            px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap
+            ${logsIntegrity ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}
+          `}>
+            {logsIntegrity
+              ? "✔ Logs OK"
+              : "⚠ Logs comprometidos"}
+          </div>
+        )}
 
-      {/* 📊 USO */}
+        {/* 🟢 FACTURAS */}
+        {facturasIntegrity !== null && (
+          <div className={`
+            px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap
+            ${facturasIntegrity ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}
+          `}>
+            {facturasIntegrity
+              ? "✔ Facturas OK"
+              : "⚠ Facturas comprometidas"}
+          </div>
+        )}
+
+        {/* 📊 USO */}
         {billing && (
-        <p className="text-sm text-gray-500">
-          {billing.usadas} / {billing.limite} facturas usadas este mes
-        </p>
-      )}
+          <div className="px-3 py-2 rounded-lg text-sm bg-gray-100 text-gray-700 whitespace-nowrap">
+            {billing.usadas} / {billing.limite} usadas
+          </div>
+        )}
+
+      </div>
 
       {/* 🔎 FILTROS */}
       <Card>
