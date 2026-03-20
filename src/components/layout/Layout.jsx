@@ -30,12 +30,12 @@ export default function Layout() {
 
       <Header />
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         
         {/* 🔷 SIDEBAR */}
         <aside className={`
           bg-white border-r shadow-sm flex flex-col transition-all
-          h-full
+          h-full min-h-0
           ${collapsed ? "w-16" : "w-64"}
         `}>
           <div
@@ -66,7 +66,7 @@ export default function Layout() {
 
           </div>
 
-          <nav className="flex-1 overflow-y-auto flex flex-col gap-1 px-2">
+          <nav className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-1 px-2">
 
             {/* DASHBOARD */}
             <NavLink to="/dashboard" className={linkClass}>
@@ -186,7 +186,7 @@ export default function Layout() {
         
 
         {/* 🔹 MAIN */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 min-h-0 p-6 overflow-y-auto">
           <Outlet />
         </main>
                
