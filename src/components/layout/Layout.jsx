@@ -31,10 +31,18 @@ export default function Layout() {
       <aside className={`bg-white border-r shadow-sm flex flex-col transition-all
         ${collapsed ? "w-16" : "w-64"}
       `}>
-        <div className="flex items-center justify-between p-4">
+        <div className="flex flex-col gap-3 p-4 border-b">
           {!collapsed && <h2 className="text-xl font-bold">InAltera</h2>}
 
-          <button onClick={() => setCollapsed(!collapsed)}>
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="
+              p-2 rounded-lg 
+              bg-gray-100 text-gray-600 
+              hover:bg-gray-200 
+              transition
+            "
+          >
             {collapsed ? "➡️" : "⬅️"}
           </button>
         </div>
