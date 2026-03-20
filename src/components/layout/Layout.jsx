@@ -66,7 +66,7 @@ export default function Layout() {
 
           </div>
 
-          <nav className="flex flex-col gap-1 px-2">
+          <nav className="flex-1 overflow-y-auto flex flex-col gap-1 px-2">
 
             {/* DASHBOARD */}
             <NavLink to="/dashboard" className={linkClass}>
