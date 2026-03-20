@@ -19,7 +19,7 @@ export default function Perfil() {
       </div>
 
       {/* 🔥 NAV TABS */}
-      <div className="bg-white border rounded-xl p-2 flex gap-2 w-fit shadow-sm">
+      <div className="bg-white border-b rounded-xl p-2 flex gap-2 w-fit shadow-sm">
         <NavLink to="usuario" className={linkClass}>
           Usuario
         </NavLink>
