@@ -35,6 +35,7 @@ export default function Layout() {
         {/* 🔷 SIDEBAR */}
         <aside className={`
           bg-white border-r shadow-sm flex flex-col transition-all
+          h-screen sticky top-0
           ${collapsed ? "w-16" : "w-64"}
         `}>
           <div
@@ -190,7 +191,7 @@ export default function Layout() {
         </main>
                
       </div>
-      
+
     </div>
   )
 }
