@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { useAuth } from "../../context/AuthContext"
+import Header from "../../components/common/Header"
 
 export default function Layout() {
   const { logout } = useAuth()
@@ -183,7 +184,11 @@ export default function Layout() {
 
         {/* 🔹 MAIN */}
         <main className="flex-1 p-6 overflow-auto">
+
+          <Header />
+
           <Outlet />
+          
         </main>
 
       </div>
