@@ -38,12 +38,12 @@ export default function Login() {
         if (data?.requires_2fa) {
           setShow2FA(true); // Cambia la vista al input de 6 dígitos
         } else if (res?.success || data?.token) {
-          navigate("/facturacion", { replace: true });
+          navigate("/dashboard", { replace: true });
         }
       } else {
         // PASO 2: Verificación de código
         await verify2FALogin(email, code2fa);
-        navigate("/facturacion", { replace: true });
+        navigate("/dashboard", { replace: true });
       }
     } catch (err) {
       setError(err.message || "Error al iniciar sesión");
