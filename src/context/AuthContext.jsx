@@ -55,11 +55,14 @@ export function AuthProvider({ children }) {
     setLoading(true)
     try {
       // Llamamos a la nueva ruta que pusimos en index.php
-      const response = await fetch(`http://localhost/Back_InAltera/public/auth/verify-2fa`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/verify-2fa`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, code }),
+        }
+      );
 
       const data = await response.json();
 
